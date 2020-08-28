@@ -1,0 +1,15 @@
+.main-content-style {
+  width: 90%;
+  max-width: 1000px;
+  margin: auto;
+  margin-top: 40px;
+  border-radius: 4px;
+  padding: 8px 8px;
+}
+
+@media only screen and (max-width: 576px) {
+  .main-content-style {
+    margin-top: 20px;
+    padding: 0;
+  }
+}
