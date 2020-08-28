@@ -2,7 +2,7 @@ import React from "react";
 import { Card, ListGroup, Row, Col, Button } from "react-bootstrap";
 import "./TodoListComponent.css";
 
-const TodoItem = () => {
+const TodoItem = ({ item }) => {
   return (
     <ListGroup.Item
       style={{
@@ -17,9 +17,9 @@ const TodoItem = () => {
       <Row className="row-style">
         <Col xs={12} sm={6} md={8}>
           <div className="todo-item-name">
-            <h6>Task 1</h6>
+            <h6>{item.name}</h6>
           </div>
-          <div className="todo-item-description">description</div>
+          <div className="todo-item-description">{item.description}</div>
         </Col>
         <Col xs={12} sm={6} md={4} className="buttons-style">
           <Button variant="outline-primary" style={{ marginRight: "10px" }}>
@@ -32,8 +32,8 @@ const TodoItem = () => {
   );
 };
 
-const TodoListComponent = (props) => {
-  console.log(props.todos);
+const TodoListComponent = ({ todos }) => {
+  console.log(todos);
   return (
     <div className="todo-list-container">
       <Card
@@ -41,13 +41,15 @@ const TodoListComponent = (props) => {
       >
         <Card.Body>
           <Card.Title>Todo List</Card.Title>
-          <ListGroup>
-            <TodoItem />
-            <TodoItem />
-            <TodoItem />
-            <TodoItem />
-            <TodoItem />
-          </ListGroup>
+          {todos.length === 0 ? (
+            <div>Empty list</div>
+          ) : (
+            <ListGroup>
+              {todos.map((item) => {
+                return <TodoItem item={item} key={item.id} />;
+              })}
+            </ListGroup>
+          )}
         </Card.Body>
       </Card>
     </div>

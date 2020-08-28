@@ -10,6 +10,7 @@ const MainContent = () => {
     setTodos((prevState) => [
       ...prevState,
       {
+        id: prevState.length === 0 ? 1 : prevState[prevState.length - 1].id + 1,
         name: name,
         description: description,
       },
