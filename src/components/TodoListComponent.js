@@ -32,7 +32,8 @@ const TodoItem = () => {
   );
 };
 
-const TodoListComponent = () => {
+const TodoListComponent = (props) => {
+  console.log(props.todos);
   return (
     <div className="todo-list-container">
       <Card

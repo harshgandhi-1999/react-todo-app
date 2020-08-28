@@ -1,21 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import { Form, Button, Col } from "react-bootstrap";
 
-const FormComponent = () => {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-  };
-
-  const handleDescriptionChange = (e) => {
-    setDescription(e.target.value);
-  };
-
+const FormComponent = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e);
+    props.handleAddTodo({
+      name: e.target.formText.value,
+      description: e.target.formDescription.value,
+    });
+    e.target.formText.value = "";
+    e.target.formDescription.value = "";
   };
 
   return (
@@ -24,25 +18,13 @@ const FormComponent = () => {
         <Col xs={12} sm={6}>
           <Form.Group controlId="formText">
             <Form.Label>Name</Form.Label>
-            <Form.Control
-              type="text"
-              size="sm"
-              placeholder="Enter name"
-              value={name}
-              onChange={handleNameChange}
-            />
+            <Form.Control type="text" size="sm" placeholder="Enter name" />
           </Form.Group>
         </Col>
         <Col xs={12} sm={6}>
           <Form.Group controlId="formDescription">
             <Form.Label>Description</Form.Label>
-            <Form.Control
-              type="text"
-              size="sm"
-              placeholder="Description"
-              value={description}
-              onChange={handleDescriptionChange}
-            />
+            <Form.Control type="text" size="sm" placeholder="Description" />
           </Form.Group>
         </Col>
       </Form.Row>
