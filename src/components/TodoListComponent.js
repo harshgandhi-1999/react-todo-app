@@ -2,7 +2,11 @@ import React from "react";
 import { Card, ListGroup, Row, Col, Button } from "react-bootstrap";
 import "./TodoListComponent.css";
 
-const TodoItem = ({ item }) => {
+const TodoItem = ({ item, handleComplete }) => {
+  const todoCompleted = (item) => {
+    handleComplete(item);
+  };
+
   return (
     <ListGroup.Item
       style={{
@@ -22,9 +26,24 @@ const TodoItem = ({ item }) => {
           <div className="todo-item-description">{item.description}</div>
         </Col>
         <Col xs={12} sm={6} md={4} className="buttons-style">
-          <Button variant="outline-primary" style={{ marginRight: "10px" }}>
-            Complete
-          </Button>
+          {item.completed === false ? (
+            <Button
+              variant="outline-primary"
+              style={{ marginRight: "10px" }}
+              onClick={() => todoCompleted(item)}
+            >
+              Complete
+            </Button>
+          ) : (
+            <Button
+              variant="outline-success"
+              style={{ marginRight: "10px" }}
+              disabled
+            >
+              Done
+            </Button>
+          )}
+
           <Button variant="outline-danger">Delete</Button>
         </Col>
       </Row>
@@ -32,7 +51,7 @@ const TodoItem = ({ item }) => {
   );
 };
 
-const TodoListComponent = ({ todos }) => {
+const TodoListComponent = ({ todos, handleComplete }) => {
   console.log(todos);
   return (
     <div className="todo-list-container">
@@ -46,7 +65,13 @@ const TodoListComponent = ({ todos }) => {
           ) : (
             <ListGroup>
               {todos.map((item) => {
-                return <TodoItem item={item} key={item.id} />;
+                return (
+                  <TodoItem
+                    item={item}
+                    key={item.id}
+                    handleComplete={handleComplete}
+                  />
+                );
               })}
             </ListGroup>
           )}
