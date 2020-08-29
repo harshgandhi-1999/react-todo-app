@@ -42,7 +42,7 @@ const TodoListComponent = ({ todos }) => {
         <Card.Body>
           <Card.Title>Todo List</Card.Title>
           {todos.length === 0 ? (
-            <div>Empty list</div>
+            <div className="empty-container">No Todos</div>
           ) : (
             <ListGroup>
               {todos.map((item) => {
