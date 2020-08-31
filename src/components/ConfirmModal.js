@@ -7,11 +7,14 @@ const ConfirmModal = ({ show, itemToBeDeleted, handleClose, handleDelete }) => {
   };
 
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
       <Modal.Header closeButton>
-        <Modal.Title>Modal heading</Modal.Title>
+        <Modal.Title>Delete ?</Modal.Title>
       </Modal.Header>
-      <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+      <Modal.Body>
+        This task is not completed yet! Are you sure you want to delete this
+        task?
+      </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
           NO

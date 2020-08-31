@@ -24,9 +24,11 @@ const TodoItem = ({ item, handleComplete, handleItemToBeDeleted }) => {
       <Row className="row-style">
         <Col xs={12} sm={6} md={8}>
           <div className="todo-item-name">
-            <h6>{item.name}</h6>
+            <h5 style={{ color: "orange" }}>{item.name.toUpperCase()}</h5>
           </div>
-          <div className="todo-item-description">{item.description}</div>
+          <div className="todo-item-description" style={{ color: "darkgray" }}>
+            {item.description}
+          </div>
         </Col>
         <Col xs={12} sm={6} md={4} className="buttons-style">
           {item.completed === false ? (
