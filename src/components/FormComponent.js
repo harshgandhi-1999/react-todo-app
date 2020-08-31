@@ -1,24 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Button, Col } from "react-bootstrap";
 
-const FormComponent = (props) => {
+const FormComponent = ({ handleAddTodo }) => {
+  const [validated, setValidated] = useState(false);
+
+  const handleValidation = () => {
+    setValidated(true);
+    console.log("true");
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.handleAddTodo({
-      name: e.target.formText.value,
-      description: e.target.formDescription.value,
-    });
-    e.target.formText.value = "";
-    e.target.formDescription.value = "";
+    const form = e.currentTarget;
+    console.log(form);
+
+    if (form.checkValidity() === false) {
+      e.stopPropagation();
+      console.log("false");
+    } else {
+      handleAddTodo({
+        name: e.target.formText.value,
+        description: e.target.formDescription.value,
+      });
+      e.target.formText.value = "";
+      e.target.formDescription.value = "";
+    }
+
+    handleValidation();
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form noValidate validated={validated} onSubmit={handleSubmit}>
       <Form.Row>
         <Col xs={12} sm={6}>
           <Form.Group controlId="formText">
-            <Form.Label>Name</Form.Label>
-            <Form.Control type="text" size="sm" placeholder="Enter name" />
+            <Form.Label>
+              Name <span style={{ color: "red" }}>*</span>
+            </Form.Label>
+            <Form.Control
+              required
+              type="text"
+              size="sm"
+              placeholder="Enter name"
+            />
+            <Form.Control.Feedback type="invalid">
+              Please provide a valid name
+            </Form.Control.Feedback>
           </Form.Group>
         </Col>
         <Col xs={12} sm={6}>

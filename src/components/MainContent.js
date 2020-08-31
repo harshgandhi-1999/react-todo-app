@@ -8,6 +8,12 @@ const MainContent = () => {
   const [todos, setTodos] = useState([]);
   const [show, setShow] = useState(false);
   const [itemToBeDeleted, setItemToBeDeleted] = useState({});
+  // const [validated, setValidated] = useState(false);
+
+  // const handleValidation = () => {
+  //   setValidated(true);
+  //   console.log("true");
+  // };
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
