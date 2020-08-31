@@ -2,9 +2,15 @@ import React, { useState } from "react";
 import "./MainContent.css";
 import AddTodoComponent from "../components/AddTodoComponent";
 import TodoListComponent from "./TodoListComponent";
+import ConfirmModal from "./ConfirmModal";
 
 const MainContent = () => {
   const [todos, setTodos] = useState([]);
+  const [show, setShow] = useState(false);
+  const [itemToBeDeleted, setItemToBeDeleted] = useState({});
+
+  const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
 
   const handleAddTodo = ({ name, description }) => {
     setTodos((prevState) => [
@@ -25,28 +31,43 @@ const MainContent = () => {
     setTodos(newTodos);
   };
 
-  const handleDelete = (item) => {
-    console.log(item);
+  const handleDelete = (item, flag) => {
+    if (flag === false) {
+      handleShow();
+    } else {
+      handleClose();
+      const newTodos = todos.filter((el) => el.id !== item.id);
+      setTodos(newTodos);
+    }
+  };
+
+  const handleItemToBeDeleted = (item) => {
+    console.log("item = ", item);
+    if (item.completed === false) {
+      setItemToBeDeleted(item);
+      console.log("itemToBeDeleted = ", itemToBeDeleted);
+      handleDelete(item, false);
+    } else {
+      handleDelete(item, true);
+    }
   };
 
   return (
     <div className="main-content-style">
+      <ConfirmModal
+        show={show}
+        itemToBeDeleted={itemToBeDeleted}
+        handleClose={handleClose}
+        handleDelete={handleDelete}
+      />
       <AddTodoComponent handleAddTodo={handleAddTodo} />
       <TodoListComponent
         todos={todos}
         handleComplete={handleComplete}
-        handleDelete={handleDelete}
+        handleItemToBeDeleted={handleItemToBeDeleted}
       />
     </div>
   );
 };
 
 export default MainContent;
-
-// {
-/* <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
-        <Toast.Body style={{ backgroundColor: "transparent" }}>
-          Todo Completed
-        </Toast.Body>
-      </Toast> */
-// }
