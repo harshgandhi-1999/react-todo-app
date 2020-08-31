@@ -11,7 +11,7 @@ const TodoListComponent = ({
   console.log(todos);
   return (
     <div className="todo-list-container">
-      <Card style={{ backgroundColor: "transparent" }}>
+      <Card style={{ backgroundColor: "transparent", border: "none" }}>
         <Card.Body>
           <Card.Title>Todo List</Card.Title>
           {todos.length === 0 ? (

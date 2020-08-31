@@ -6,17 +6,14 @@ const FormComponent = ({ handleAddTodo }) => {
 
   const handleValidation = () => {
     setValidated(true);
-    console.log("true");
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.currentTarget;
     console.log(form);
-
     if (form.checkValidity() === false) {
       e.stopPropagation();
-      console.log("false");
     } else {
       handleAddTodo({
         name: e.target.formText.value,
@@ -25,7 +22,6 @@ const FormComponent = ({ handleAddTodo }) => {
       e.target.formText.value = "";
       e.target.formDescription.value = "";
     }
-
     handleValidation();
   };
 
