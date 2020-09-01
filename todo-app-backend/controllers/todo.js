@@ -22,6 +22,7 @@ exports.getAllTodos = (req, res) => {
     }
 
     res.status(200).json({
+      count: items.length,
       todoList: items,
     });
   });

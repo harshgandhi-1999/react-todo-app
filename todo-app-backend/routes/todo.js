@@ -11,6 +11,8 @@ const {
   updateTodoItem,
 } = require("../controllers/todo");
 
+const { isSignedIn, isAuthorized } = require("../controllers/auth");
+
 router.param("todoItemId", getTodoById);
 
 // get all todos get route
