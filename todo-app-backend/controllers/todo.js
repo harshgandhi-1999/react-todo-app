@@ -1,4 +1,5 @@
 const Todo = require("../models/todo");
+const { check, validationResult } = require("express-validator");
 
 exports.getTodoById = (req, res, next, id) => {
   Todo.findById(id).exec((err, item) => {
@@ -13,28 +14,34 @@ exports.getTodoById = (req, res, next, id) => {
 };
 
 exports.getAllTodos = (req, res) => {
-  Todo.find().exec((err, items) => {
+  Todo.find({ createrId: req.profile._id }).exec((err, items) => {
     if (err) {
       return res.status(404).json({
         error: err,
         message: "Unable to fetch items",
       });
     }
-
     res.status(200).json({
-      count: items.length,
-      todoList: items,
+      items,
     });
   });
 };
 
 exports.createTodoItem = (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({
+      error: errors.array()[0].msg,
+    });
+  }
+
   const todoItem = new Todo({
+    createrId: req.profile._id,
     name: req.body.name.toLowerCase(),
     description: req.body.description,
   });
 
-  todoItem.save((err, todoItem) => {
+  todoItem.save((err, savedItem) => {
     if (err) {
       return res.status(404).json({
         error: err,
@@ -43,8 +50,8 @@ exports.createTodoItem = (req, res) => {
     }
 
     res.status(200).json({
-      todoItem: todoItem,
-      message: "TODO Item successfully created",
+      createdItem: savedItem,
+      message: "TODO item createed successfully",
     });
   });
 };

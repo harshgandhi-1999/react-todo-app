@@ -18,29 +18,33 @@ exports.signup = (req, res) => {
         error: err,
       });
     }
+    console.log(user);
     if (user.length >= 1) {
       return res.status(422).json({
         message: "This email id already exist",
       });
     } else {
-      bcrypt.hash(req.body.password, 10, (err, hash) => {
+      bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
         if (err) {
           return res.status(500).json({
             error: err,
           });
         } else {
           const user = User({
+            username: req.body.username,
             email: req.body.email,
-            password: hash,
+            password: hashedPassword,
           });
           user.save((err, result) => {
             if (err) {
+              console.log(err);
               return res.status(400).json({
                 error: err,
                 message: "Signup Failed",
               });
             }
             res.status(200).json({
+              username: result.username,
               email: result.email,
               id: result._id,
               message: "User signup successfull",
@@ -118,8 +122,8 @@ exports.isSignedIn = expressJwt({
 
 exports.isAuthorized = (req, res, next) => {
   let checker = req.profile && req.auth && req.profile._id == req.auth._id;
-  console.log(req.profile);
-  console.log(req.auth);
+  // console.log(req.profile);
+  // console.log(req.auth);
   if (!checker) {
     return res.status(403).json({
       error: "ACCESS DENIED",
