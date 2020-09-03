@@ -1,7 +1,15 @@
 import React from "react";
 
+import WelcomeNavbar from "../../components/WelcomeNavbar";
+import SignupFormComponent from "./components/SignupFormComponent";
+
 const Signup = () => {
-  return <div>this is signup page</div>;
+  return (
+    <>
+      <WelcomeNavbar />
+      <SignupFormComponent />
+    </>
+  );
 };
 
 export default Signup;

@@ -1,0 +1,38 @@
+.signup-form-container {
+    width: 100%;
+    height: 100%;
+}
+
+.signup-form-style {
+    width: 80%;
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 20px 20px;
+    background-color: #fffffe;
+    color: black;
+    border-radius: 4px;
+}
+
+.signup-form-heading {
+    font-size: 2rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+@media only screen and (max-width: 480px) {
+    .signup-form-style {
+        width: 90%;
+        padding: 16px;
+        background-color: transparent;
+        color: #007bff;
+    }
+
+    .signup-form-heading {
+        color: #007bff;
+        text-align: center;
+    }
+
+    .login-link {
+        color: #00b5b5;
+    }
+}

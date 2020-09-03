@@ -1,12 +1,33 @@
 import React from "react";
-import "./LoginFormComponent.css";
+import "./LoginForm.css";
 import { Form, Button } from "react-bootstrap";
+import { API } from "../../../utils/api";
 
 import { Link } from "react-router-dom";
 
 const LoginFormComponent = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
+    const data = JSON.stringify({
+      email: e.target.formEmail.value,
+      password: e.target.formPassword.value,
+    });
+    console.log(data);
+    fetch(`${API}/signin`, {
+      method: "POST",
+      body: data,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
+    e.target.formEmail.value = "";
+    e.target.formPassword.value = "";
   };
 
   return (
