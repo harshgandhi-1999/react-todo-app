@@ -8,6 +8,7 @@ const {
   getUserInfo,
   updateUserInfo,
   deleteAccount,
+  resetPassword,
 } = require("../controllers/user");
 
 const { isSignedIn, isAuthorized } = require("../controllers/auth");
@@ -26,5 +27,23 @@ router.put(
 );
 
 router.delete("/user/delete/:userId", isSignedIn, isAuthorized, deleteAccount);
+
+router.put(
+  "/user/resetPassword/:userId",
+  isSignedIn,
+  isAuthorized,
+  [
+    check(
+      "currentPassword",
+      "password should be atleaast 3 characters"
+    ).isLength({
+      min: 3,
+    }),
+    check("newPassword", "password should be aleast 3 characters").isLength({
+      min: 3,
+    }),
+  ],
+  resetPassword
+);
 
 module.exports = router;

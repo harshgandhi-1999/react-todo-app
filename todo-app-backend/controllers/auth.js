@@ -121,11 +121,12 @@ exports.isSignedIn = expressJwt({
 });
 
 exports.isAuthorized = (req, res, next) => {
+  console.log("authorized");
   let checker = req.profile && req.auth && req.profile._id == req.auth._id;
   // console.log(req.profile);
   // console.log(req.auth);
   if (!checker) {
-    return res.status(403).json({
+    return res.status(401).json({
       error: "ACCESS DENIED",
     });
   }
