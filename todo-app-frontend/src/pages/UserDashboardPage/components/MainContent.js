@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./MainContent.css";
-import AddTodoComponent from "../components/AddTodoComponent";
+import AddTodoComponent from "./AddTodoComponent";
 import TodoListComponent from "./TodoListComponent";
 import ConfirmModal from "./ConfirmModal";
 
