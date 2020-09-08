@@ -2,8 +2,15 @@ import React from "react";
 import "./LoginForm.css";
 import { Form, Button } from "react-bootstrap";
 import { API } from "../../../utils/api";
-
 import { Link } from "react-router-dom";
+import axios from "axios";
+
+const config = {
+  headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+  },
+};
 
 const LoginFormComponent = () => {
   const handleSubmit = (e) => {
@@ -13,21 +20,14 @@ const LoginFormComponent = () => {
       password: e.target.formPassword.value,
     });
     console.log(data);
-    fetch(`${API}/signin`, {
-      method: "POST",
-      body: data,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
+    axios
+      .post(`${API}/signin`, data, config)
       .then((res) => {
         console.log(res);
       })
-      .catch((err) => console.log(err));
-    e.target.formEmail.value = "";
-    e.target.formPassword.value = "";
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -36,19 +36,19 @@ const LoginFormComponent = () => {
         <Form onSubmit={handleSubmit}>
           <div className="login-form-heading">Log-In</div>
           <Form.Group controlId="formEmail">
-            <Form.Label>Email address</Form.Label>
+            <Form.Label style={{ fontWeight: "500" }}>Email address</Form.Label>
             <Form.Control type="email" placeholder="Enter email" />
           </Form.Group>
           <Form.Group controlId="formPassword">
-            <Form.Label>Password</Form.Label>
+            <Form.Label style={{ fontWeight: "500" }}>Password</Form.Label>
             <Form.Control type="password" placeholder="Password" />
           </Form.Group>
           <Button
             variant="primary"
             type="submit"
-            style={{ width: "100%", marginBottom: "10px" }}
+            style={{ width: "100%", marginBottom: "10px", fontWeight: "500" }}
           >
-            Log-In
+            LOGIN
           </Button>
           <Link to="/signup">
             <span className="register-link">
