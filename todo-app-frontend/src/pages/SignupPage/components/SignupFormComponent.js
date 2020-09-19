@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import "./SignupForm.css";
 import { API } from "../../../utils/api";
 import axios from "axios";
 import { Form, Input, Button, message } from "antd";
+import "../../formStyle.css";
 
 const config = {
   headers: {
@@ -13,7 +13,7 @@ const config = {
 };
 
 const Label = ({ text }) => {
-  return <span style={{ fontWeight: "500" }}>{text}</span>;
+  return <span className="my-label-style">{text}</span>;
 };
 
 const SignupFormComponent = ({ history }) => {
@@ -50,15 +50,15 @@ const SignupFormComponent = ({ history }) => {
   };
 
   return (
-    <div className="signup-form-container">
-      <div className="signup-form-style">
+    <div className="my-form-container">
+      <div className="my-form-style">
         <Form
           layout="vertical"
           name="signup-form"
           requiredMark="optional"
           onFinish={handleSubmit}
         >
-          <div className="signup-form-heading">Sign-Up</div>
+          <div className="my-form-heading">Sign-Up</div>
           <Form.Item
             label={<Label text="Username" />}
             name="username"
@@ -67,7 +67,7 @@ const SignupFormComponent = ({ history }) => {
             ]}
             style={{ marginBottom: "10px" }}
           >
-            <Input placeholder="Enter username" />
+            <Input type="text" placeholder="Enter username" />
           </Form.Item>
           <Form.Item
             label={<Label text="Email" />}
@@ -77,7 +77,7 @@ const SignupFormComponent = ({ history }) => {
             ]}
             style={{ marginBottom: "10px" }}
           >
-            <Input placeholder="Enter email id" />
+            <Input type="email" placeholder="Enter email id" />
           </Form.Item>
           <Form.Item
             label={<Label text="Password" />}
@@ -90,15 +90,15 @@ const SignupFormComponent = ({ history }) => {
             <Input.Password placeholder="Enter password" />
           </Form.Item>
           <Button
+            type="primary"
             htmlType="submit"
-            style={{ width: "100%", marginBottom: "10px", fontWeight: "500" }}
+            style={{ width: "100%", margin: "10px 0", fontWeight: "500" }}
             loading={loading}
-            disabled={loading}
           >
             SIGNUP
           </Button>
           <Link to="/login">
-            <span className="login-link">Already have an account? Login</span>
+            <span className="my-link">Already have an account? Login</span>
           </Link>
         </Form>
       </div>
