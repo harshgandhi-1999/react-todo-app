@@ -60,7 +60,7 @@ const MainContent = () => {
 
   return (
     <div className="main-content-style">
-      <ConfirmModal
+      {/* <ConfirmModal
         show={show}
         itemToBeDeleted={itemToBeDeleted}
         handleClose={handleClose}
@@ -71,7 +71,7 @@ const MainContent = () => {
         todos={todos}
         handleComplete={handleComplete}
         handleItemToBeDeleted={handleItemToBeDeleted}
-      />
+      /> */}
     </div>
   );
 };

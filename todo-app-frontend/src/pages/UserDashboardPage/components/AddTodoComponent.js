@@ -1,11 +1,11 @@
 import React from "react";
-import { Card } from "react-bootstrap";
+// import { Card } from "react-bootstrap";
 import FormComponent from "./FormComponent";
 
 const AddTodoComponent = (props) => {
   return (
     <div>
-      <Card
+      {/* <Card
         style={{
           backgroundColor: "#343a40",
           border: "2px solid orange",
@@ -17,7 +17,7 @@ const AddTodoComponent = (props) => {
           <Card.Title>Add Todo</Card.Title>
           <FormComponent handleAddTodo={props.handleAddTodo} />
         </Card.Body>
-      </Card>
+      </Card> */}
     </div>
   );
 };
