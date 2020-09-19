@@ -4,16 +4,13 @@ import { API } from "../../../utils/api";
 import axios from "axios";
 import { Form, Input, Button, message } from "antd";
 import "../../formStyle.css";
+import Label from "../../../components/Label";
 
 const config = {
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
   },
-};
-
-const Label = ({ text }) => {
-  return <span className="my-label-style">{text}</span>;
 };
 
 const SignupFormComponent = ({ history }) => {

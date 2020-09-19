@@ -1,0 +1,15 @@
+.todo-list-container {
+  margin-top: 20px;
+}
+
+.empty-container {
+  color: darkgrey;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  padding: 20px 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-style: dashed;
+}

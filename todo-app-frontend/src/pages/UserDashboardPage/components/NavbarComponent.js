@@ -1,16 +1,13 @@
 import React from "react";
+import { PageHeader } from "antd";
 
 const NavbarComponent = () => {
   return (
-    <div></div>
-    // <Navbar
-    //   sticky="top"
-    //   variant="dark"
-    //   style={{ backgroundColor: "#3c8cf0" }}
-    //   expand="lg"
-    // >
-    //   <Navbar.Brand>My Todos</Navbar.Brand>
-    // </Navbar>
+    <PageHeader
+      className="site-page-header"
+      title={<div style={{ color: "#fff" }}>My Todos</div>}
+      style={{ backgroundColor: "#3c8cf0", padding: "8px 16px" }}
+    />
   );
 };
 

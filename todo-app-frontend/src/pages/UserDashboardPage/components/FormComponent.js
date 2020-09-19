@@ -1,62 +1,41 @@
-import React, { useState } from "react";
-// import { Form, Button, Col } from "react-bootstrap";
+import React from "react";
+import { Form, Button, Input, Row, Col, Space } from "antd";
+import Label from "../../../components/Label";
 
 const FormComponent = ({ handleAddTodo }) => {
-  const [validated, setValidated] = useState(false);
-
-  const handleValidation = () => {
-    setValidated(true);
-  };
-
   const handleSubmit = (e) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    console.log(form);
-    if (form.checkValidity() === false) {
-      e.stopPropagation();
-    } else {
-      handleAddTodo({
-        name: e.target.formText.value,
-        description: e.target.formDescription.value,
-      });
-      e.target.formText.value = "";
-      e.target.formDescription.value = "";
-    }
-    handleValidation();
+    handleAddTodo({
+      name: e.taskName,
+      description: e.taskDescription,
+    });
+    console.log(e);
   };
 
   return (
-    <div></div>
-    // <Form noValidate validated={validated} onSubmit={handleSubmit}>
-    //   <Form.Row>
-    //     <Col xs={12} sm={6}>
-    //       <Form.Group controlId="formText">
-    //         <Form.Label>
-    //           Name <span style={{ color: "red" }}>*</span>
-    //         </Form.Label>
-    //         <Form.Control
-    //           required
-    //           type="text"
-    //           size="sm"
-    //           placeholder="Enter name"
-    //         />
-    //         <Form.Control.Feedback type="invalid">
-    //           Please provide a valid name
-    //         </Form.Control.Feedback>
-    //       </Form.Group>
-    //     </Col>
-    //     <Col xs={12} sm={6}>
-    //       <Form.Group controlId="formDescription">
-    //         <Form.Label>Description</Form.Label>
-    //         <Form.Control type="text" size="sm" placeholder="Description" />
-    //       </Form.Group>
-    //     </Col>
-    //   </Form.Row>
-
-    //   <Button variant="primary" type="submit">
-    //     Add Todo
-    //   </Button>
-    // </Form>
+    <Form layout="vertical" name="add-todo-form" onFinish={handleSubmit}>
+      <Row gutter={[16, 0]}>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+          <Form.Item
+            label={<Label text="Name" style={{ color: "#fff" }} />}
+            name="taskName"
+            rules={[{ required: true, message: "Please provide task name!" }]}
+          >
+            <Input placeholder="Enter name" />
+          </Form.Item>
+        </Col>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+          <Form.Item
+            label={<Label text="Description" style={{ color: "#fff" }} />}
+            name="taskDescription"
+          >
+            <Input placeholder="Enter description" />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Button type="primary" htmlType="submit">
+        ADD
+      </Button>
+    </Form>
   );
 };
 

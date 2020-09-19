@@ -1,19 +1,12 @@
 import React, { useState } from "react";
 import "./MainContent.css";
 import AddTodoComponent from "./AddTodoComponent";
-import TodoListComponent from "./TodoListComponent";
-import ConfirmModal from "./ConfirmModal";
+import TodoListContainer from "./TodoListContainer";
 
 const MainContent = () => {
   const [todos, setTodos] = useState([]);
   const [show, setShow] = useState(false);
   const [itemToBeDeleted, setItemToBeDeleted] = useState({});
-  // const [validated, setValidated] = useState(false);
-
-  // const handleValidation = () => {
-  //   setValidated(true);
-  //   console.log("true");
-  // };
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
@@ -65,13 +58,13 @@ const MainContent = () => {
         itemToBeDeleted={itemToBeDeleted}
         handleClose={handleClose}
         handleDelete={handleDelete}
-      />
+      /> */}
       <AddTodoComponent handleAddTodo={handleAddTodo} />
-      <TodoListComponent
+      <TodoListContainer
         todos={todos}
         handleComplete={handleComplete}
         handleItemToBeDeleted={handleItemToBeDeleted}
-      /> */}
+      />
     </div>
   );
 };
