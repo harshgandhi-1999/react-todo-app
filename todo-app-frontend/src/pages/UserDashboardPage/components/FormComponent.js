@@ -2,13 +2,12 @@ import React from "react";
 import { Form, Button, Input, Row, Col } from "antd";
 import Label from "../../../components/Label";
 
-const FormComponent = ({ handleAddTodo }) => {
+const FormComponent = ({ handleAddTodo, btnLoading }) => {
   const handleSubmit = (e) => {
     handleAddTodo({
       name: e.taskName,
       description: e.taskDescription,
     });
-    console.log(e);
   };
 
   return (
@@ -32,7 +31,7 @@ const FormComponent = ({ handleAddTodo }) => {
           </Form.Item>
         </Col>
       </Row>
-      <Button type="primary" htmlType="submit">
+      <Button loading={btnLoading} type="primary" htmlType="submit">
         ADD
       </Button>
     </Form>

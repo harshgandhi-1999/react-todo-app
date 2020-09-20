@@ -14,9 +14,9 @@ const config = {
 };
 
 const LoginFormComponent = () => {
-  const [loading, setLoading] = useState(false);
+  const [btnLoading, setBtnLoading] = useState(false);
   const handleSubmit = (e) => {
-    setLoading(true);
+    setBtnLoading(true);
     const data = JSON.stringify({
       email: e.email,
       password: e.password,
@@ -24,13 +24,13 @@ const LoginFormComponent = () => {
     axios
       .post(`${API}/signin`, data, config)
       .then((res) => {
-        setLoading(false);
+        setBtnLoading(false);
         message.success(res.data.message);
         localStorage.setItem("Token", res.data.token);
         localStorage.setItem("UserId", res.data.userId);
       })
       .catch((err) => {
-        setLoading(false);
+        setBtnLoading(false);
         if (err.response) {
           message.error(err.response.data.message);
           console.log(err.response);
@@ -75,7 +75,7 @@ const LoginFormComponent = () => {
             type="primary"
             htmlType="submit"
             style={{ width: "100%", margin: "10px 0", fontWeight: "500" }}
-            loading={loading}
+            loading={btnLoading}
           >
             LOGIN
           </Button>

@@ -14,10 +14,10 @@ const config = {
 };
 
 const SignupFormComponent = ({ history }) => {
-  const [loading, setLoading] = useState(false);
+  const [btnLoading, setBtnLoading] = useState(false);
 
   const handleSubmit = (e) => {
-    setLoading(true);
+    setBtnLoading(true);
     const data = JSON.stringify({
       username: e.username,
       email: e.email,
@@ -28,14 +28,14 @@ const SignupFormComponent = ({ history }) => {
       .post(`${API}/signup`, data, config)
       .then((res) => {
         console.log(res);
-        setLoading(false);
+        setBtnLoading(false);
         message.success(res.data.message);
         // setTimeout(() => {
         //   history.push("/login");
         // }, 2500);
       })
       .catch((err) => {
-        setLoading(false);
+        setBtnLoading(false);
         if (err.response) {
           message.error(err.response.data.message || err.response.data.error);
           console.log(err.response);
@@ -90,7 +90,7 @@ const SignupFormComponent = ({ history }) => {
             type="primary"
             htmlType="submit"
             style={{ width: "100%", margin: "10px 0", fontWeight: "500" }}
-            loading={loading}
+            loading={btnLoading}
           >
             SIGNUP
           </Button>

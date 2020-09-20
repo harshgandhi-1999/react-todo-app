@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, List } from "antd";
 
-const TodoItem = ({ item, handleDeleteTodo }) => {
+const TodoItem = ({ item, handleDeleteTodo, handleCompleteTodo }) => {
   return (
     <List.Item
       key={item.id}
@@ -14,6 +14,7 @@ const TodoItem = ({ item, handleDeleteTodo }) => {
               color: "green",
               borderColor: "green",
             }}
+            onClick={() => handleCompleteTodo(item.id)}
           >
             Complete
           </Button>
