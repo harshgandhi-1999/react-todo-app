@@ -3,52 +3,17 @@ import "./MainContent.css";
 import AddTodoComponent from "./AddTodoComponent";
 import TodoListContainer from "./TodoListContainer";
 
+import { axiosInstance } from "../../../utils/axiosIntercepter";
+
 const MainContent = () => {
   const [todos, setTodos] = useState([]);
-  const [show, setShow] = useState(false);
-  const [itemToBeDeleted, setItemToBeDeleted] = useState({});
-
-  const handleShow = () => setShow(true);
-  const handleClose = () => setShow(false);
 
   const handleAddTodo = ({ name, description }) => {
-    setTodos((prevState) => [
-      ...prevState,
-      {
-        id: prevState.length === 0 ? 1 : prevState[prevState.length - 1].id + 1,
-        name: name,
-        description: description,
-        completed: false,
-      },
-    ]);
+    // axiosInstance.post("/")
   };
 
-  const handleComplete = (item) => {
-    const newTodos = todos.map((el) =>
-      el.id === item.id ? { ...el, completed: true } : el
-    );
-    setTodos(newTodos);
-  };
-
-  const handleDelete = (item, flag) => {
-    if (flag === false) {
-      handleShow();
-    } else {
-      handleClose();
-      const newTodos = todos.filter((el) => el.id !== item.id);
-      setTodos(newTodos);
-    }
-  };
-
-  const handleItemToBeDeleted = (item) => {
-    console.log("item = ", item);
-    if (item.completed === false) {
-      setItemToBeDeleted(item);
-      console.log("itemToBeDeleted = ", itemToBeDeleted);
-      handleDelete(item, false);
-    } else {
-      handleDelete(item, true);
-    }
+  const fetchTodoList = () => {
+    // fetch list
   };
 
   return (
@@ -60,11 +25,7 @@ const MainContent = () => {
         handleDelete={handleDelete}
       /> */}
       <AddTodoComponent handleAddTodo={handleAddTodo} />
-      <TodoListContainer
-        todos={todos}
-        handleComplete={handleComplete}
-        handleItemToBeDeleted={handleItemToBeDeleted}
-      />
+      <TodoListContainer todos={todos} />
     </div>
   );
 };

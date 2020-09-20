@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, List } from "antd";
 
-const TodoItem = ({ item, handleComplete, handleItemToBeDeleted }) => {
+const TodoItem = ({ item }) => {
   return (
     <List.Item
       key={item.id}
@@ -14,7 +14,6 @@ const TodoItem = ({ item, handleComplete, handleItemToBeDeleted }) => {
               color: "green",
               borderColor: "green",
             }}
-            onClick={() => handleComplete(item)}
           >
             Complete
           </Button>
@@ -31,11 +30,7 @@ const TodoItem = ({ item, handleComplete, handleItemToBeDeleted }) => {
             Done
           </Button>
         ),
-        <Button
-          danger
-          style={{ background: "transparent" }}
-          onClick={() => handleItemToBeDeleted(item)}
-        >
+        <Button danger style={{ background: "transparent" }}>
           Delete
         </Button>,
       ]}
@@ -43,7 +38,7 @@ const TodoItem = ({ item, handleComplete, handleItemToBeDeleted }) => {
         backgroundColor: "transparent",
         border: "none",
         borderRadius: "20px",
-        marginBottom: "20px",
+        marginTop: "20px",
         padding: "20px 20px",
         boxShadow:
           "-3px 3px 0px rgba(0,255,255,0.8), 3px -3px 5px rgba(0,0,0,0.5)",
@@ -51,31 +46,18 @@ const TodoItem = ({ item, handleComplete, handleItemToBeDeleted }) => {
     >
       <List.Item.Meta
         title={
-          <span style={{ color: "orange" }}>{item.name.toUpperCase()}</span>
+          <div style={{ color: "orange", overflowWrap: "anywhere" }}>
+            {item.name.toUpperCase()}
+          </div>
         }
         description={
-          <span style={{ color: "darkgray" }}>{item.description}</span>
+          <div style={{ color: "darkgray", overflowWrap: "anywhere" }}>
+            {item.description}
+          </div>
         }
       />
     </List.Item>
   );
 };
 
-const TodoList = ({ todos, handleComplete, handleItemToBeDeleted }) => {
-  return (
-    <List
-      dataSource={todos}
-      renderItem={(item) => {
-        return (
-          <TodoItem
-            item={item}
-            handleComplete={handleComplete}
-            handleItemToBeDeleted={handleItemToBeDeleted}
-          />
-        );
-      }}
-    />
-  );
-};
-
-export default TodoList;
+export default TodoItem;

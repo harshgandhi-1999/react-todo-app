@@ -1,21 +1,22 @@
 import React from "react";
-import { Card } from "antd";
+import { List } from "antd";
 import "./TodoListContainer.css";
-import TodoList from "./TodoList";
+import TodoItem from "./TodoItem";
 
-const TodoListContainer = (props) => {
+const TodoListContainer = ({ todos }) => {
   return (
     <div className="todo-list-container">
-      <Card
-        title="Todo List"
-        style={{ backgroundColor: "transparent", border: "none" }}
-      >
-        {props.todos.length === 0 ? (
-          <div className="empty-container">No Todos</div>
-        ) : (
-          <TodoList {...props} />
-        )}
-      </Card>
+      {todos.length === 0 ? (
+        <div className="empty-container">No Todos</div>
+      ) : (
+        <List
+          header="hello"
+          dataSource={todos}
+          renderItem={(item) => {
+            return <TodoItem item={item} />;
+          }}
+        />
+      )}
     </div>
   );
 };
