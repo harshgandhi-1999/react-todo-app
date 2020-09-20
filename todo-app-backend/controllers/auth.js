@@ -95,7 +95,7 @@ exports.signin = (req, res) => {
 
         return res.status(200).json({
           message: "Login Successfull",
-          email: user.email,
+          userId: user._id,
           token: accessToken,
         });
       } else {

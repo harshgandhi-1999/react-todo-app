@@ -27,6 +27,7 @@ const LoginFormComponent = () => {
         setLoading(false);
         message.success(res.data.message);
         localStorage.setItem("Token", res.data.token);
+        localStorage.setItem("UserId", res.data.userId);
       })
       .catch((err) => {
         setLoading(false);

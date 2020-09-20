@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, List } from "antd";
 
-const TodoItem = ({ item }) => {
+const TodoItem = ({ item, handleDeleteTodo }) => {
   return (
     <List.Item
       key={item.id}
@@ -30,7 +30,11 @@ const TodoItem = ({ item }) => {
             Done
           </Button>
         ),
-        <Button danger style={{ background: "transparent" }}>
+        <Button
+          danger
+          style={{ background: "transparent" }}
+          onClick={() => handleDeleteTodo(item.name, item.id, item.completed)}
+        >
           Delete
         </Button>,
       ]}
