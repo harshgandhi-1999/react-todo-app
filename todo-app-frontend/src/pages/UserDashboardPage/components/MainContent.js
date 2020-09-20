@@ -27,7 +27,7 @@ const MainContent = () => {
         fetchTodoList();
       })
       .catch((err) => {
-        setBtnLoading(true);
+        setBtnLoading(false);
         if (err.response) {
           message.error(
             err.response.data.message +

@@ -1,43 +1,38 @@
 import React from "react";
-import { Button, List } from "antd";
+import { Dropdown, Menu, List } from "antd";
+import { MoreOutlined } from "@ant-design/icons";
 
+const menu = (item, deleteTodo, completeTodo) => {
+  const handleClick = (e) => {
+    if (e.key === "1") {
+      completeTodo(item.id);
+    } else if (e.key === "2") {
+      deleteTodo(item.name, item.id, item.completed);
+    }
+  };
+
+  return (
+    <Menu onClick={handleClick}>
+      <Menu.Item key="1" disabled={item.completed}>
+        Mark as Completed
+      </Menu.Item>
+      <Menu.Item key="2">Delete Todo</Menu.Item>
+    </Menu>
+  );
+};
 const TodoItem = ({ item, handleDeleteTodo, handleCompleteTodo }) => {
   return (
     <List.Item
       key={item.id}
       actions={[
-        item.completed === false ? (
-          <Button
-            type="default"
-            style={{
-              background: "transparent",
-              color: "green",
-              borderColor: "green",
-            }}
-            onClick={() => handleCompleteTodo(item.id)}
-          >
-            Complete
-          </Button>
-        ) : (
-          <Button
-            type="default"
-            style={{
-              background: "transparent",
-              color: "green",
-              borderColor: "green",
-            }}
-            disabled
-          >
-            Done
-          </Button>
-        ),
-        <Button
-          danger
-          style={{ background: "transparent" }}
-          onClick={() => handleDeleteTodo(item.name, item.id, item.completed)}
+        <Dropdown
+          overlay={() => menu(item, handleDeleteTodo, handleCompleteTodo)}
+          trigger={["click"]}
         >
-          Delete
-        </Button>,
+          <MoreOutlined
+            style={{ color: "#fff", fontSize: "2rem", cursor: "pointer" }}
+          />
+        </Dropdown>,
       ]}
       style={{
         backgroundColor: "transparent",
