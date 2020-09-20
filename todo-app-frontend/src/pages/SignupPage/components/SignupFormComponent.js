@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Form, Button, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import "./SignupForm.css";
 import { API } from "../../../utils/api";
 import axios from "axios";
+import { Form, Input, Button, message } from "antd";
+import "../../formStyle.css";
+import Label from "../../../components/Label";
 
 const config = {
   headers: {
@@ -12,113 +13,89 @@ const config = {
   },
 };
 
-const SignupFormComponent = ({
-  history,
-  setShow,
-  settoastHeader,
-  settoastBody,
-}) => {
-  const [validated, setValidated] = useState(false);
+const SignupFormComponent = ({ history }) => {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    if (form.checkValidity() === false) {
-      e.stopPropagation();
-    } else {
-      setLoading(true);
-      e.persist();
-      const data = JSON.stringify({
-        username: e.target.formName.value,
-        email: e.target.formEmail.value,
-        password: e.target.formPassword.value,
+    setLoading(true);
+    const data = JSON.stringify({
+      username: e.username,
+      email: e.email,
+      password: e.password,
+    });
+
+    axios
+      .post(`${API}/signup`, data, config)
+      .then((res) => {
+        console.log(res);
+        setLoading(false);
+        message.success(res.data.message);
+        // setTimeout(() => {
+        //   history.push("/login");
+        // }, 2500);
+      })
+      .catch((err) => {
+        setLoading(false);
+        if (err.response) {
+          message.error(err.response.data.message || err.response.data.error);
+          console.log(err.response);
+        } else {
+          message.error(err.message);
+          console.log(err.message);
+        }
       });
-
-      axios
-        .post(`${API}/signup`, data, config)
-        .then((res) => {
-          setLoading(false);
-          settoastHeader(res.data.message);
-          settoastBody("Redirecting to login page ...");
-          setShow(true);
-          setTimeout(() => {
-            history.push("/login");
-          }, 2500);
-        })
-        .catch((err) => {
-          setLoading(false);
-          if (err.response) {
-            settoastHeader("SignUp Failed");
-            settoastBody(err.response.data.message);
-            setShow(true);
-            console.log(err.response);
-          } else {
-            console.log(err);
-          }
-        });
-    }
-
-    setValidated(true);
   };
 
   return (
-    <div className="signup-form-container">
-      <div className="signup-form-style">
-        <Form noValidate validated={validated} onSubmit={handleSubmit}>
-          <div className="signup-form-heading">Sign-Up</div>
-          <Form.Group controlId="formName">
-            <Form.Label style={{ fontWeight: "500" }}>
-              Username<span style={{ color: "red" }}>*</span>
-            </Form.Label>
-            <Form.Control type="text" placeholder="Username" required />
-            <Form.Control.Feedback type="invalid">
-              Please provide a username
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group controlId="formEmail">
-            <Form.Label style={{ fontWeight: "500" }}>
-              Email address<span style={{ color: "red" }}>*</span>
-            </Form.Label>
-            <Form.Control type="email" placeholder="Email" required />
-            <Form.Control.Feedback type="invalid">
-              Please provide a valid email
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group controlId="formPassword">
-            <Form.Label style={{ fontWeight: "500" }}>
-              Password<span style={{ color: "red" }}>*</span>
-            </Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Password"
-              required
-              pattern=".{3,}"
-            />
-            <Form.Control.Feedback type="invalid">
-              Password should be atleast 3 chars
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Button
-            variant="primary"
-            type="submit"
-            style={{ width: "100%", marginBottom: "10px", fontWeight: "500" }}
-            disabled={loading}
+    <div className="my-form-container">
+      <div className="my-form-style">
+        <Form
+          layout="vertical"
+          name="signup-form"
+          requiredMark="optional"
+          onFinish={handleSubmit}
+        >
+          <div className="my-form-heading">Sign-Up</div>
+          <Form.Item
+            label={<Label text="Username" />}
+            name="username"
+            rules={[
+              { required: true, message: "Please provide your username!" },
+            ]}
+            style={{ marginBottom: "10px" }}
           >
-            {loading && (
-              <Spinner
-                as="span"
-                animation="border"
-                size="sm"
-                role="status"
-                aria-hidden="true"
-              />
-            )}
-            {"   "}
+            <Input type="text" placeholder="Enter username" />
+          </Form.Item>
+          <Form.Item
+            label={<Label text="Email" />}
+            name="email"
+            rules={[
+              { required: true, message: "Please provide your email id!" },
+            ]}
+            style={{ marginBottom: "10px" }}
+          >
+            <Input type="email" placeholder="Enter email id" />
+          </Form.Item>
+          <Form.Item
+            label={<Label text="Password" />}
+            name="password"
+            rules={[
+              { required: true, message: "Please provide your password!" },
+            ]}
+            style={{ marginBottom: "10px" }}
+          >
+            <Input.Password placeholder="Enter password" />
+          </Form.Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            style={{ width: "100%", margin: "10px 0", fontWeight: "500" }}
+            loading={loading}
+          >
             SIGNUP
           </Button>
           <Link to="/login">
-            <span className="login-link">Already have an account? Login</span>
+            <span className="my-link">Already have an account? Login</span>
           </Link>
         </Form>
       </div>
