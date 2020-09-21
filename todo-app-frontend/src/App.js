@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import "./App.css";
 import Dashboard from "./pages/UserDashboardPage/Dashboard";
 import Login from "./pages/LoginPage/Login";
@@ -11,11 +11,11 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Switch>
-          <Route path="/signup" component={Signup} exact />
-          <Route path="/login" component={Login} exact />
-          <Route path="/" component={Dashboard} exact />
+          <Route exact path="/" component={Dashboard} />
+          <Route exact path="/signup" component={Signup} />
+          <Route exact path="/login" component={Login} />
           {/* <Route path="/notfound" component={NotFound} exact /> */}
-          {/* <Redirect to="/notfound" /> */}
+          <Route path="*" component={NotFound} />
         </Switch>
       </BrowserRouter>
     </div>
