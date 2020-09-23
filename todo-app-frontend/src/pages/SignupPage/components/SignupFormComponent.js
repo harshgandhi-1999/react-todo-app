@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { API } from "../../../utils/api";
-import axios from "axios";
 import { Form, Input, Button, message } from "antd";
 import "../../formStyle.css";
 import Label from "../../../components/Label";
+import axiosInstance from "../../../utils/axiosInstance";
 
 const config = {
   headers: {
@@ -24,8 +23,8 @@ const SignupFormComponent = ({ history }) => {
       password: e.password,
     });
 
-    axios
-      .post(`${API}/signup`, data, config)
+    axiosInstance
+      .post("/signup", data, config)
       .then((res) => {
         console.log(res);
         setBtnLoading(false);

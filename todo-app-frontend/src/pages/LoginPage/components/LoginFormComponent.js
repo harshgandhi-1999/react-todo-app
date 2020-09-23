@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Form, Button, Input, message } from "antd";
-import { API } from "../../../utils/api";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import "../../formStyle.css";
 import Label from "../../../components/Label";
+import { useAuth } from "../../../context/auth";
+import axiosInstance from "../../../utils/axiosInstance";
 
 const config = {
   headers: {
@@ -13,21 +13,27 @@ const config = {
   },
 };
 
-const LoginFormComponent = () => {
+const LoginFormComponent = ({ setIsLoggedIn }) => {
   const [btnLoading, setBtnLoading] = useState(false);
+  const { setLocalStorage } = useAuth();
+
   const handleSubmit = (e) => {
     setBtnLoading(true);
     const data = JSON.stringify({
       email: e.email,
       password: e.password,
     });
-    axios
-      .post(`${API}/signin`, data, config)
+    axiosInstance
+      .post("/signin", data, config)
       .then((res) => {
         setBtnLoading(false);
         message.success(res.data.message);
-        localStorage.setItem("Token", res.data.token);
-        localStorage.setItem("UserId", res.data.userId);
+        // localStorage.setItem("Token", res.data.token);
+        setLocalStorage({
+          token: res.data.token,
+          userId: res.data.userId,
+        });
+        setIsLoggedIn(true);
       })
       .catch((err) => {
         setBtnLoading(false);
