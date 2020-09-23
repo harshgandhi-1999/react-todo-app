@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Form, Input, Button, message } from "antd";
 import "../../formStyle.css";
 import Label from "../../../components/Label";
-import axiosInstance from "../../../utils/axiosIntercepter";
+import axiosInstance from "../../../utils/axiosInstance";
 
 const config = {
   headers: {

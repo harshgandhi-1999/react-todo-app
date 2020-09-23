@@ -3,7 +3,7 @@ import "./MainContent.css";
 import AddTodoComponent from "./AddTodoComponent";
 import TodoListContainer from "./TodoListContainer";
 
-import axiosInstance from "../../../utils/axiosIntercepter";
+import axiosInstance from "../../../utils/axiosInstance";
 import { message, Modal } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { useAuth } from "../../../context/auth";

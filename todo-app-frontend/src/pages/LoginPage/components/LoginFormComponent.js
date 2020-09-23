@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import "../../formStyle.css";
 import Label from "../../../components/Label";
 import { useAuth } from "../../../context/auth";
-import axiosInstance from "../../../utils/axiosIntercepter";
+import axiosInstance from "../../../utils/axiosInstance";
 
 const config = {
   headers: {

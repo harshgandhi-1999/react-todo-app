@@ -7,6 +7,7 @@ import Signup from "./pages/SignupPage/Signup";
 import NotFound from "./pages/NotFoundPage/NotFound";
 import ProtectedRoute from "./Routes/ProtectedRoute";
 import { AuthContext } from "./context/auth";
+import axiosInstance from "./utils/axiosInstance";
 
 function App() {
   const existingToken = localStorage.getItem("Token");
@@ -14,6 +15,7 @@ function App() {
   const [authToken, setAuthToken] = useState(existingToken);
   const [authUser, setAuthUser] = useState(userId);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
 
   const setLocalStorage = (data) => {
     localStorage.setItem("Token", data.token);
@@ -25,13 +27,40 @@ function App() {
   useEffect(() => {
     if (authToken) {
       setIsLoggedIn(true);
+      axiosInstance
+        .get(`/user/${authUser}`, {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        })
+        .then((res) => {
+          setUsername(res.data.username);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       setIsLoggedIn(false);
     }
-  }, [authToken]);
+  }, [authToken, authUser]);
+
+  const logout = () => {
+    localStorage.clear();
+    setIsLoggedIn(false);
+    setAuthToken(null);
+    setAuthUser(null);
+    setUsername(null);
+  };
+
   return (
     <AuthContext.Provider
-      value={{ authToken, authUser, setLocalStorage: setLocalStorage }}
+      value={{
+        authToken,
+        authUser,
+        username,
+        setLocalStorage: setLocalStorage,
+        logout: logout,
+      }}
     >
       <div className="App">
         <BrowserRouter>

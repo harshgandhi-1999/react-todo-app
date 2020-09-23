@@ -4,12 +4,15 @@ import { useAuth } from "../context/auth";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   const { authToken } = useAuth();
-
   return (
     <Route
       {...rest}
       component={(props) => {
-        return authToken ? <Component {...props} /> : <Redirect to="/login" />;
+        return authToken ? (
+          <Component logout={rest.logout} {...props} />
+        ) : (
+          <Redirect to="/login" />
+        );
       }}
     />
   );
