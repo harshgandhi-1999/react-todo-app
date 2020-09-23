@@ -2,11 +2,11 @@ import React from "react";
 import WelcomeNavbar from "../../components/WelcomeNavbar";
 import LoginFormComponent from "./components/LoginFormComponent";
 
-const Login = () => {
+const Login = ({ setIsLoggedIn }) => {
   return (
     <>
       <WelcomeNavbar />
-      <LoginFormComponent />
+      <LoginFormComponent setIsLoggedIn={setIsLoggedIn} />
     </>
   );
 };

@@ -3,9 +3,10 @@ import "./MainContent.css";
 import AddTodoComponent from "./AddTodoComponent";
 import TodoListContainer from "./TodoListContainer";
 
-import { axiosInstance } from "../../../utils/axiosIntercepter";
+import axiosInstance from "../../../utils/axiosIntercepter";
 import { message, Modal } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { useAuth } from "../../../context/auth";
 
 const { confirm } = Modal;
 
@@ -13,14 +14,23 @@ const MainContent = () => {
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
-  const userId = localStorage.getItem("UserId");
+  const { authUser, authToken } = useAuth();
+
   const handleAddTodo = ({ name, description }) => {
     setBtnLoading(true);
     axiosInstance
-      .post(`/create-todo/${userId}`, {
-        name: name,
-        description: description,
-      })
+      .post(
+        `/create-todo/${authUser}`,
+        {
+          name: name,
+          description: description,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
       .then((res) => {
         setBtnLoading(false);
         message.success(res.data.message);
@@ -55,7 +65,11 @@ const MainContent = () => {
           console.log("OK");
           setLoading(true);
           axiosInstance
-            .delete(`/delete-todo/${userId}/${todoItemId}`)
+            .delete(`/delete-todo/${authUser}/${todoItemId}`, {
+              headers: {
+                Authorization: `Bearer ${authToken}`,
+              },
+            })
             .then((res) => {
               setLoading(false);
               message.success(res.data.message);
@@ -80,7 +94,11 @@ const MainContent = () => {
     } else {
       setLoading(true);
       axiosInstance
-        .delete(`/delete-todo/${userId}/${todoItemId}`)
+        .delete(`/delete-todo/${authUser}/${todoItemId}`, {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        })
         .then((res) => {
           setLoading(false);
           message.success(res.data.message);
@@ -102,7 +120,11 @@ const MainContent = () => {
   const handleCompleteTodo = (todoItemId) => {
     setLoading(true);
     axiosInstance
-      .put(`/complete-todo/${userId}/${todoItemId}`)
+      .put(`/complete-todo/${authUser}/${todoItemId}`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
       .then((res) => {
         setLoading(false);
         console.log(res);
@@ -124,7 +146,11 @@ const MainContent = () => {
   const fetchTodoList = () => {
     setLoading(true);
     axiosInstance
-      .get(`/get-all-todos/${userId}`)
+      .get(`/get-all-todos/${authUser}`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
       .then((res) => {
         const todolist = res.data.items.map((item) => {
           return {
