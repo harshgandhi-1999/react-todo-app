@@ -57,7 +57,11 @@ const NavbarComponent = () => {
               marginRight: 0,
             }}
           >
-            <span>{username !== "" ? username[0].toUpperCase() : ""}</span>
+            <span>
+              {username !== "" && username !== undefined
+                ? username[0].toUpperCase()
+                : ""}
+            </span>
           </Avatar>
         </Dropdown>,
       ]}

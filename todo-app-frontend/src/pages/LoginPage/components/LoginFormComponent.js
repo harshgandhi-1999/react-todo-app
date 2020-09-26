@@ -32,6 +32,7 @@ const LoginFormComponent = ({ setIsLoggedIn }) => {
         setLocalStorage({
           token: res.data.token,
           userId: res.data.userId,
+          refreshToken: res.data.refreshToken,
         });
         setIsLoggedIn(true);
       })

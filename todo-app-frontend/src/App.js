@@ -10,27 +10,30 @@ import { AuthContext } from "./context/auth";
 import axiosInstance from "./utils/axiosInstance";
 
 function App() {
-  const existingToken = localStorage.getItem("Token");
-  const userId = localStorage.getItem("UserId");
-  const [authToken, setAuthToken] = useState(existingToken);
-  const [authUser, setAuthUser] = useState(userId);
+  const [authToken, setAuthToken] = useState(null);
+  const [authUser, setAuthUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
 
   const setLocalStorage = (data) => {
     localStorage.setItem("Token", data.token);
     localStorage.setItem("UserId", data.userId);
+    localStorage.setItem("RefreshToken", data.refreshToken);
     setAuthToken(data.token);
     setAuthUser(data.userId);
   };
 
   useEffect(() => {
-    if (authToken) {
+    const existingToken = localStorage.getItem("Token");
+    const userId = localStorage.getItem("UserId");
+    if (existingToken && userId) {
       setIsLoggedIn(true);
+      setAuthToken(existingToken);
+      setAuthUser(userId);
       axiosInstance
-        .get(`/user/${authUser}`, {
+        .get(`/user/${userId}`, {
           headers: {
-            Authorization: `Bearer ${authToken}`,
+            Authorization: `Bearer ${existingToken}`,
           },
         })
         .then((res) => {
@@ -42,7 +45,7 @@ function App() {
     } else {
       setIsLoggedIn(false);
     }
-  }, [authToken, authUser]);
+  }, []);
 
   const logout = () => {
     localStorage.clear();

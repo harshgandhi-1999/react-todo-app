@@ -4,6 +4,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const expressJwt = require("express-jwt");
 
+const tokenList = {};
+
 exports.signup = (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -47,7 +49,7 @@ exports.signup = (req, res) => {
               username: result.username,
               email: result.email,
               id: result._id,
-              message: "User signup successfull",
+              message: "Signup Successfull",
             });
           });
         }
@@ -83,20 +85,33 @@ exports.signin = (req, res) => {
       }
       if (result) {
         // generate token
-        const accessToken = jwt.sign(
-          { email: user.email, _id: user._id, role: user.role },
-          process.env.SECRET_KEY,
+
+        const userData = {
+          userId: user._id,
+          role: user.role,
+        };
+        const accessToken = jwt.sign(userData, process.env.SECRET_KEY, {
+          expiresIn: "5m",
+        });
+
+        const refreshToken = jwt.sign(
+          userData,
+          process.env.REFRESH_TOKEN_SECRET,
           {
-            expiresIn: "1h",
+            expiresIn: "30d",
           }
         );
 
-        res.cookie("token", accessToken);
+        tokenList[refreshToken] = {
+          token: accessToken,
+          userId: user._id,
+        };
 
         return res.status(200).json({
           message: "Login Successfull",
           userId: user._id,
           token: accessToken,
+          refreshToken: refreshToken,
         });
       } else {
         return res.status(401).json({
@@ -107,11 +122,31 @@ exports.signin = (req, res) => {
   });
 };
 
-exports.signout = (req, res) => {
-  res.clearCookie("token");
-  res.json({
-    message: "User signout successfully",
-  });
+exports.setToken = (req, res, next) => {
+  //
+  const userId = req.body.userId;
+  const refreshToken = req.body.refreshToken;
+  if (refreshToken && refreshToken in tokenList) {
+    const userData = {
+      userId: userId,
+      role: 0,
+    };
+
+    const accessToken = jwt.sign(userData, process.env.SECRET_KEY, {
+      expiresIn: "5m",
+    });
+
+    tokenList[refreshToken].token = accessToken;
+
+    res.status(200).json({
+      token: accessToken,
+    });
+  } else {
+    res.status(404).json({
+      message: "Invalid request",
+    });
+  }
+  next();
 };
 
 exports.isSignedIn = expressJwt({
@@ -120,7 +155,14 @@ exports.isSignedIn = expressJwt({
   requestProperty: "auth",
 });
 
-exports.isAuthorized = (req, res, next) => {
+exports.isAuthorized = (err, req, res, next) => {
+  console.log(err);
+  if (err.name === "UnauthorizedError") {
+    return res.status(401).json({
+      status: err.status,
+      message: err.name,
+    });
+  }
   console.log("authorized");
   let checker = req.profile && req.auth && req.profile._id == req.auth._id;
   // console.log(req.profile);
