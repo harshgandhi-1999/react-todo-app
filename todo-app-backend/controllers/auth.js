@@ -47,7 +47,7 @@ exports.signup = (req, res) => {
               username: result.username,
               email: result.email,
               id: result._id,
-              message: "User signup successfull",
+              message: "Signup Successfull",
             });
           });
         }
@@ -83,15 +83,13 @@ exports.signin = (req, res) => {
       }
       if (result) {
         // generate token
-        const accessToken = jwt.sign(
-          { email: user.email, _id: user._id, role: user.role },
-          process.env.SECRET_KEY,
-          {
-            expiresIn: "1h",
-          }
-        );
-
-        res.cookie("token", accessToken);
+        const userData = {
+          userId: user._id,
+          role: user.role,
+        };
+        const accessToken = jwt.sign(userData, process.env.SECRET_KEY, {
+          expiresIn: "10m",
+        });
 
         return res.status(200).json({
           message: "Login Successfull",
@@ -107,24 +105,22 @@ exports.signin = (req, res) => {
   });
 };
 
-exports.signout = (req, res) => {
-  res.clearCookie("token");
-  res.json({
-    message: "User signout successfully",
-  });
-};
-
 exports.isSignedIn = expressJwt({
   secret: process.env.SECRET_KEY,
   algorithms: ["HS256"],
   requestProperty: "auth",
 });
 
-exports.isAuthorized = (req, res, next) => {
+exports.isAuthorized = (err, req, res, next) => {
+  console.log(err);
+  if (err.name === "UnauthorizedError") {
+    return res.status(401).json({
+      status: err.status,
+      message: err.code,
+    });
+  }
   console.log("authorized");
   let checker = req.profile && req.auth && req.profile._id == req.auth._id;
-  // console.log(req.profile);
-  // console.log(req.auth);
   if (!checker) {
     return res.status(401).json({
       error: "ACCESS DENIED",

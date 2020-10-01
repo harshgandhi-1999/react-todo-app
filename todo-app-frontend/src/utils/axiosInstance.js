@@ -1,9 +1,8 @@
 import axios from "axios";
+const axiosInstance = axios.create();
 
-export default axios.create({
-  baseURL: "http://localhost:8000/api/todo-app",
-  headers: {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-  },
-});
+axiosInstance.defaults.baseURL = "http://localhost:8000/api/todo-app";
+axiosInstance.defaults.headers.common["Content-Type"] = "application/json";
+axiosInstance.defaults.headers.common["Accept"] = "application/json";
+
+export default axiosInstance;
