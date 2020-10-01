@@ -13,39 +13,49 @@ function App() {
   const [authToken, setAuthToken] = useState(null);
   const [authUser, setAuthUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(null);
 
   const setLocalStorage = (data) => {
+    axiosInstance.defaults.headers.common["Authorization"] =
+      "Bearer " + data.token;
     localStorage.setItem("Token", data.token);
     localStorage.setItem("UserId", data.userId);
-    localStorage.setItem("RefreshToken", data.refreshToken);
     setAuthToken(data.token);
     setAuthUser(data.userId);
+    setIsLoggedIn(true);
   };
 
   useEffect(() => {
     const existingToken = localStorage.getItem("Token");
     const userId = localStorage.getItem("UserId");
     if (existingToken && userId) {
-      setIsLoggedIn(true);
+      axiosInstance.defaults.headers.common["Authorization"] =
+        "Bearer " + existingToken;
+      if (!isLoggedIn) {
+        setIsLoggedIn(true);
+      }
       setAuthToken(existingToken);
       setAuthUser(userId);
+    }
+  }, [isLoggedIn]);
+
+  // fetch username
+  useEffect(() => {
+    if (isLoggedIn && authToken && authUser && !username) {
       axiosInstance
-        .get(`/user/${userId}`, {
-          headers: {
-            Authorization: `Bearer ${existingToken}`,
-          },
-        })
+        .get(`/user/${authUser}`)
         .then((res) => {
           setUsername(res.data.username);
         })
         .catch((err) => {
-          console.log(err);
+          if (err.response) {
+            console.log(err.response.data);
+          } else {
+            console.log(err.message);
+          }
         });
-    } else {
-      setIsLoggedIn(false);
     }
-  }, []);
+  }, [isLoggedIn, authToken, authUser, username]);
 
   const logout = () => {
     localStorage.clear();
@@ -58,6 +68,7 @@ function App() {
   return (
     <AuthContext.Provider
       value={{
+        isLoggedIn,
         authToken,
         authUser,
         username,

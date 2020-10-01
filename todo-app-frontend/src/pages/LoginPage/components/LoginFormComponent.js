@@ -13,7 +13,7 @@ const config = {
   },
 };
 
-const LoginFormComponent = ({ setIsLoggedIn }) => {
+const LoginFormComponent = () => {
   const [btnLoading, setBtnLoading] = useState(false);
   const { setLocalStorage } = useAuth();
 
@@ -34,7 +34,6 @@ const LoginFormComponent = ({ setIsLoggedIn }) => {
           userId: res.data.userId,
           refreshToken: res.data.refreshToken,
         });
-        setIsLoggedIn(true);
       })
       .catch((err) => {
         setBtnLoading(false);

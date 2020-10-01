@@ -14,23 +14,15 @@ const MainContent = () => {
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
-  const { authUser, authToken } = useAuth();
+  const { authUser, logout } = useAuth();
 
   const handleAddTodo = ({ name, description }) => {
     setBtnLoading(true);
     axiosInstance
-      .post(
-        `/create-todo/${authUser}`,
-        {
-          name: name,
-          description: description,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      )
+      .post(`/create-todo/${authUser}`, {
+        name: name,
+        description: description,
+      })
       .then((res) => {
         setBtnLoading(false);
         message.success(res.data.message);
@@ -38,11 +30,16 @@ const MainContent = () => {
       })
       .catch((err) => {
         setBtnLoading(false);
+        console.log(err);
         if (err.response) {
-          message.error(
-            err.response.data.message +
-              ",You already have a todo with that name"
-          );
+          if (err.response.status === 401) {
+            logout();
+          } else {
+            message.error(
+              err.response.data.message +
+                ",You already have a todo with that name"
+            );
+          }
           console.log(err.response);
         } else {
           message.error(err.message);
@@ -65,11 +62,7 @@ const MainContent = () => {
           console.log("OK");
           setLoading(true);
           axiosInstance
-            .delete(`/delete-todo/${authUser}/${todoItemId}`, {
-              headers: {
-                Authorization: `Bearer ${authToken}`,
-              },
-            })
+            .delete(`/delete-todo/${authUser}/${todoItemId}`)
             .then((res) => {
               setLoading(false);
               message.success(res.data.message);
@@ -78,8 +71,13 @@ const MainContent = () => {
             })
             .catch((err) => {
               setLoading(false);
+              console.log(err);
               if (err.response) {
-                message.error("Unable to delete task");
+                if (err.response.status === 401) {
+                  logout();
+                } else {
+                  message.error("Unable to delete task");
+                }
                 console.log(err.response);
               } else {
                 message.error(err.message);
@@ -94,11 +92,7 @@ const MainContent = () => {
     } else {
       setLoading(true);
       axiosInstance
-        .delete(`/delete-todo/${authUser}/${todoItemId}`, {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        })
+        .delete(`/delete-todo/${authUser}/${todoItemId}`)
         .then((res) => {
           setLoading(false);
           message.success(res.data.message);
@@ -106,8 +100,13 @@ const MainContent = () => {
         })
         .catch((err) => {
           setLoading(false);
+          console.log(err);
           if (err.response) {
-            message.error("Unable to delete task");
+            if (err.response.status === 401) {
+              logout();
+            } else {
+              message.error("Unable to delete task");
+            }
             console.log(err.response);
           } else {
             message.error(err.message);
@@ -120,11 +119,7 @@ const MainContent = () => {
   const handleCompleteTodo = (todoItemId) => {
     setLoading(true);
     axiosInstance
-      .put(`/complete-todo/${authUser}/${todoItemId}`, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      })
+      .put(`/complete-todo/${authUser}/${todoItemId}`)
       .then((res) => {
         setLoading(false);
         console.log(res);
@@ -132,9 +127,14 @@ const MainContent = () => {
         fetchTodoList();
       })
       .catch((err) => {
+        console.log(err);
         setLoading(false);
         if (err.response) {
-          message.error("Unable to complete task");
+          if (err.response.status === 401) {
+            logout();
+          } else {
+            message.error("Unable to complete task");
+          }
           console.log(err.response);
         } else {
           message.error(err.message);
@@ -146,12 +146,9 @@ const MainContent = () => {
   const fetchTodoList = () => {
     setLoading(true);
     axiosInstance
-      .get(`/get-all-todos/${authUser}`, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      })
+      .get(`/get-all-todos/${authUser}`)
       .then((res) => {
+        console.log(res.data);
         const todolist = res.data.items.map((item) => {
           return {
             id: item._id,
@@ -166,8 +163,13 @@ const MainContent = () => {
       })
       .catch((err) => {
         setLoading(false);
+        console.log(err);
         if (err.response) {
-          message.error("Unable to fetch todos");
+          if (err.response.status === 401) {
+            logout();
+          } else {
+            message.error("Unable to fetch todos");
+          }
           console.log(err.response);
         } else {
           console.log(err.message);

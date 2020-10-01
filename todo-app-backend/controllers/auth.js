@@ -4,8 +4,6 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const expressJwt = require("express-jwt");
 
-const tokenList = {};
-
 exports.signup = (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -85,33 +83,18 @@ exports.signin = (req, res) => {
       }
       if (result) {
         // generate token
-
         const userData = {
           userId: user._id,
           role: user.role,
         };
         const accessToken = jwt.sign(userData, process.env.SECRET_KEY, {
-          expiresIn: "5m",
+          expiresIn: "10m",
         });
-
-        const refreshToken = jwt.sign(
-          userData,
-          process.env.REFRESH_TOKEN_SECRET,
-          {
-            expiresIn: "30d",
-          }
-        );
-
-        tokenList[refreshToken] = {
-          token: accessToken,
-          userId: user._id,
-        };
 
         return res.status(200).json({
           message: "Login Successfull",
           userId: user._id,
           token: accessToken,
-          refreshToken: refreshToken,
         });
       } else {
         return res.status(401).json({
@@ -120,33 +103,6 @@ exports.signin = (req, res) => {
       }
     });
   });
-};
-
-exports.setToken = (req, res, next) => {
-  //
-  const userId = req.body.userId;
-  const refreshToken = req.body.refreshToken;
-  if (refreshToken && refreshToken in tokenList) {
-    const userData = {
-      userId: userId,
-      role: 0,
-    };
-
-    const accessToken = jwt.sign(userData, process.env.SECRET_KEY, {
-      expiresIn: "5m",
-    });
-
-    tokenList[refreshToken].token = accessToken;
-
-    res.status(200).json({
-      token: accessToken,
-    });
-  } else {
-    res.status(404).json({
-      message: "Invalid request",
-    });
-  }
-  next();
 };
 
 exports.isSignedIn = expressJwt({
@@ -160,13 +116,11 @@ exports.isAuthorized = (err, req, res, next) => {
   if (err.name === "UnauthorizedError") {
     return res.status(401).json({
       status: err.status,
-      message: err.name,
+      message: err.code,
     });
   }
   console.log("authorized");
   let checker = req.profile && req.auth && req.profile._id == req.auth._id;
-  // console.log(req.profile);
-  // console.log(req.auth);
   if (!checker) {
     return res.status(401).json({
       error: "ACCESS DENIED",
