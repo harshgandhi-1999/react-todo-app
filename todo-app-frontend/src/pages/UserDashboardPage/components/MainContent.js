@@ -145,37 +145,40 @@ const MainContent = () => {
 
   const fetchTodoList = () => {
     setLoading(true);
-    axiosInstance
-      .get(`/get-all-todos/${authUser}`)
-      .then((res) => {
-        console.log(res.data);
-        const todolist = res.data.items.map((item) => {
-          return {
-            id: item._id,
-            name: item.name,
-            description: item.description,
-            completed: item.completed,
-          };
-        });
+    console.log(authUser);
+    if (authUser !== null) {
+      axiosInstance
+        .get(`/get-all-todos/${authUser}`)
+        .then((res) => {
+          console.log(res.data);
+          const todolist = res.data.items.map((item) => {
+            return {
+              id: item._id,
+              name: item.name,
+              description: item.description,
+              completed: item.completed,
+            };
+          });
 
-        setTodos(todolist);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-        console.log(err);
-        if (err.response) {
-          if (err.response.status === 401) {
-            logout();
+          setTodos(todolist);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setLoading(false);
+          console.log(err);
+          if (err.response) {
+            if (err.response.status === 401) {
+              logout();
+            } else {
+              message.error("Unable to fetch todos");
+            }
+            console.log(err.response);
           } else {
-            message.error("Unable to fetch todos");
+            console.log(err.message);
+            message.error(err.message);
           }
-          console.log(err.response);
-        } else {
-          console.log(err.message);
-          message.error(err.message);
-        }
-      });
+        });
+    }
   };
 
   useEffect(fetchTodoList, []);

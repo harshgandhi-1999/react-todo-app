@@ -8,32 +8,33 @@ import NotFound from "./pages/NotFoundPage/NotFound";
 import ProtectedRoute from "./Routes/ProtectedRoute";
 import { AuthContext } from "./context/auth";
 import axiosInstance from "./utils/axiosInstance";
+import UserSettings from "./pages/settingsPage/UserSettings";
 
 function App() {
   const [authToken, setAuthToken] = useState(null);
   const [authUser, setAuthUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState(null);
+  const [username, setUsername] = useState("");
 
   const setLocalStorage = (data) => {
     axiosInstance.defaults.headers.common["Authorization"] =
       "Bearer " + data.token;
     localStorage.setItem("Token", data.token);
     localStorage.setItem("UserId", data.userId);
+    setIsLoggedIn(true);
     setAuthToken(data.token);
     setAuthUser(data.userId);
-    setIsLoggedIn(true);
   };
 
   useEffect(() => {
+    console.log("1st use effect");
     const existingToken = localStorage.getItem("Token");
     const userId = localStorage.getItem("UserId");
-    if (existingToken && userId) {
+    if (existingToken !== null && userId !== null) {
+      console.log("1st use effect success");
       axiosInstance.defaults.headers.common["Authorization"] =
         "Bearer " + existingToken;
-      if (!isLoggedIn) {
-        setIsLoggedIn(true);
-      }
+      setIsLoggedIn(true);
       setAuthToken(existingToken);
       setAuthUser(userId);
     }
@@ -41,7 +42,14 @@ function App() {
 
   // fetch username
   useEffect(() => {
-    if (isLoggedIn && authToken && authUser && !username) {
+    console.log("2nd use effect");
+    if (
+      isLoggedIn &&
+      authToken !== null &&
+      authUser !== null &&
+      username === ""
+    ) {
+      console.log("2nd use effect success");
       axiosInstance
         .get(`/user/${authUser}`)
         .then((res) => {
@@ -62,7 +70,7 @@ function App() {
     setIsLoggedIn(false);
     setAuthToken(null);
     setAuthUser(null);
-    setUsername(null);
+    setUsername("");
   };
 
   return (
@@ -80,7 +88,12 @@ function App() {
         <BrowserRouter>
           <Switch>
             <ProtectedRoute exact path="/" component={Dashboard} />
-            <Route exact path="/signup" component={Signup} />
+            <ProtectedRoute exact path="/settings" component={UserSettings} />
+            <Route
+              exact
+              path="/signup"
+              component={() => (isLoggedIn ? <Redirect to="/" /> : <Signup />)}
+            />
             <Route
               exact
               path="/login"

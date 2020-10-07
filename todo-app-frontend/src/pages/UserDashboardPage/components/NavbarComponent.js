@@ -8,12 +8,12 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 
-const menu = (logout) => {
+const menu = (logout, history) => {
   const handleClick = (e) => {
     if (e.key === "account") {
       console.log("account page");
     } else if (e.key === "settings") {
-      console.log("setting page");
+      history.push("/settings");
     } else if (e.key === "logout") {
       logout();
     }
@@ -37,7 +37,7 @@ const menu = (logout) => {
   );
 };
 
-const NavbarComponent = () => {
+const NavbarComponent = (props) => {
   const { username, logout } = useAuth();
   return (
     <PageHeader
@@ -47,7 +47,7 @@ const NavbarComponent = () => {
       extra={[
         <Dropdown
           key="options"
-          overlay={() => menu(logout)}
+          overlay={() => menu(logout, props.history)}
           trigger={["click"]}
         >
           <Avatar
