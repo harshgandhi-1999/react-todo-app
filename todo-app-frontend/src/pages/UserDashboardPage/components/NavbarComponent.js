@@ -1,18 +1,18 @@
 import React from "react";
-import { Avatar, Dropdown, Menu, PageHeader } from "antd";
+import { Link } from "react-router-dom";
+import { Dropdown, Menu, PageHeader } from "antd";
 
 import { useAuth } from "../../../context/auth";
 import {
   LogoutOutlined,
   SettingOutlined,
   UserOutlined,
+  DownOutlined,
 } from "@ant-design/icons";
 
 const menu = (logout, history) => {
   const handleClick = (e) => {
-    if (e.key === "account") {
-      console.log("account page");
-    } else if (e.key === "settings") {
+    if (e.key === "settings") {
       history.push("/settings");
     } else if (e.key === "logout") {
       logout();
@@ -20,18 +20,14 @@ const menu = (logout, history) => {
   };
 
   return (
-    <Menu onClick={handleClick}>
-      <Menu.Item key="account">
-        <UserOutlined />
-        Account
-      </Menu.Item>
+    <Menu theme="dark" onClick={handleClick}>
       <Menu.Item key="settings">
         <SettingOutlined />
-        Settings
+        <span style={{ fontSize: "1rem" }}>Settings</span>
       </Menu.Item>
       <Menu.Item key="logout">
         <LogoutOutlined />
-        Logout
+        <span style={{ fontSize: "1rem" }}>Logout</span>
       </Menu.Item>
     </Menu>
   );
@@ -42,7 +38,13 @@ const NavbarComponent = (props) => {
   return (
     <PageHeader
       className="site-page-header"
-      title={<div style={{ color: "#fff" }}>My Todos</div>}
+      title={
+        <div style={{ color: "#fff", cursor: "pointer" }}>
+          <Link to="/" style={{ color: "#fff" }}>
+            My Todos
+          </Link>
+        </div>
+      }
       style={{ backgroundColor: "#3c8cf0", padding: "8px 16px" }}
       extra={[
         <Dropdown
@@ -50,15 +52,13 @@ const NavbarComponent = (props) => {
           overlay={() => menu(logout, props.history)}
           trigger={["click"]}
         >
-          <Avatar
-            style={{
-              backgroundColor: "rgba(0,0,0,0.5)",
-              cursor: "pointer",
-              marginRight: 0,
-            }}
-          >
-            <span>{username ? username[0].toUpperCase() : ""}</span>
-          </Avatar>
+          <span style={{ fontSize: "1rem", cursor: "pointer", color: "#fff" }}>
+            <UserOutlined />
+            {"  "}
+            {username.length > 0 ? username : ""}
+            {"  "}
+            <DownOutlined />
+          </span>
         </Dropdown>,
       ]}
     />

@@ -92,7 +92,9 @@ function App() {
             <Route
               exact
               path="/signup"
-              component={() => (isLoggedIn ? <Redirect to="/" /> : <Signup />)}
+              component={(props) =>
+                isLoggedIn ? <Redirect to="/" /> : <Signup {...props} />
+              }
             />
             <Route
               exact

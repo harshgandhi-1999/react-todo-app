@@ -1,0 +1,31 @@
+.settings-container {
+  width: 90%;
+  max-width: 800px;
+  margin: auto;
+  margin-top: 40px;
+  margin-bottom: 0;
+  padding: 32px;
+  /* background-color: #09203f; */
+  background-color: #001529;
+  /* background-color: #111328; */
+}
+
+.settings-page-heading {
+  background-color: #00b5b5;
+  margin-bottom: 20px;
+  padding: 8px 16px;
+  border-radius: 4px;
+}
+
+@media only screen and (max-width: 576px) {
+  .settings-container {
+    margin-top: 20px;
+    padding: 16px;
+  }
+}
+@media only screen and (max-width: 420px) {
+  .settings-container {
+    margin-top: 0;
+    width: 100%;
+  }
+}

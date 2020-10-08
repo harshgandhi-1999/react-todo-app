@@ -30,7 +30,7 @@ const TodoItem = ({ item, handleDeleteTodo, handleCompleteTodo }) => {
           trigger={["click"]}
         >
           <MoreOutlined
-            style={{ color: "#fff", fontSize: "2rem", cursor: "pointer" }}
+            style={{ color: "#fff", fontSize: "1.5rem", cursor: "pointer" }}
           />
         </Dropdown>,
       ]}
