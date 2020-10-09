@@ -1,12 +1,12 @@
 import React,{useState} from "react";
-import { Form, Button, Input, Row, Col, Typography,message } from "antd";
+import { Form, Button, Input, Typography,message } from "antd";
 import Label from "../../../components/Label";
 import axiosInstance from "../../../utils/axiosInstance";
 import { useAuth } from "../../../context/auth";
 
 const { Title } = Typography;
 
-const ResetPassword = ({pageLoading}) => {
+const ResetPassword = () => {
   const [btnLoading,setbtnLoading] = useState(false);
 
   const {authUser,logout} = useAuth()

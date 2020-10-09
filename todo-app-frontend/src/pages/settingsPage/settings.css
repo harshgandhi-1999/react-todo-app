@@ -20,7 +20,8 @@
 @media only screen and (max-width: 576px) {
   .settings-container {
     margin-top: 20px;
-    padding: 16px;
+    padding-left: 24px;
+    padding-right: 24px;
   }
 }
 @media only screen and (max-width: 420px) {

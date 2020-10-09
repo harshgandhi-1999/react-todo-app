@@ -3,6 +3,7 @@ import { Divider, Spin, Typography } from "antd";
 import NavbarComponent from "../../components/NavbarComponent"
 import AccountSettings from "./components/AccountSettings";
 import ResetPassword from "./components/ResetPassword";
+import DeleteAccount from "./components/DeleteAccount";
 import "./settings.css";
 
 const { Title } = Typography;
@@ -23,6 +24,8 @@ const UserSettings = (props) => {
           <AccountSettings setPageLoading={setPageLoading} />
           <Divider style={{ borderColor: "#fff" }} />
           <ResetPassword setPageLoading={setPageLoading}/>
+          <Divider style={{ borderColor: "#fff" }} />
+          <DeleteAccount/>
         </div>
       </Spin>
     </>
