@@ -80,41 +80,55 @@ exports.resetPassword = (req, res) => {
     });
   }
   const { currentPassword, newPassword } = req.body;
-  bcrypt.compare(currentPassword, req.profile.password, (err, result) => {
-    console.log("error", err);
-    if (err) {
-      return res.status(400).json({
-        error: err,
-      });
-    }
-    if (result) {
-      bcrypt.hash(newPassword, 10, (err, hashedPassword) => {
-        if (err) {
-          return res.status(500).json({
-            error: err,
-            message: "Password reset failed!",
-          });
-        }
 
-        User.findByIdAndUpdate(req.profile._id, {
-          $set: { password: hashedPassword },
-        }).exec((err, result) => {
+  User.findById(req.profile._id).select('password')
+  .exec((err,user)=>{
+    if(err || !user){
+        return res.status(404).json({
+          error: err,
+          message: "User not found",
+        }); 
+    }
+
+    // compare password first
+    bcrypt.compare(currentPassword,user.password, (err, result) => {
+      console.log("error", err);
+      if (err) {
+        return res.status(400).json({
+          error: err,
+        });
+      }
+      // if matched 
+      if (result) {
+        bcrypt.hash(newPassword, 10, (err, hashedPassword) => {
           if (err) {
-            return res.status(400).json({
+            return res.status(500).json({
               error: err,
               message: "Password reset failed!",
             });
           }
-
-          res.status(200).json({
-            message: "Password updated successfully",
+  
+          User.findByIdAndUpdate(req.profile._id, {
+            $set: { password: hashedPassword },
+          }).exec((err, result) => {
+            if (err) {
+              return res.status(400).json({
+                error: err,
+                message: "Password reset failed!",
+              });
+            }
+  
+            res.status(200).json({
+              message: "Password updated successfully",
+            });
           });
         });
-      });
-    } else {
-      return res.status(400).json({
-        message: "Current Password is incorrect",
-      });
-    }
-  });
+      } else {
+        // if not matched
+        return res.status(400).json({
+          message: "Current Password is incorrect",
+        });
+      }
+    });
+  })
 };

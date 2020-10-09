@@ -46,7 +46,6 @@ const AccountSettings = ({ setPageLoading }) => {
   }, [authUser]);
 
   const updateAccountInfo = (e) => {
-    console.log(e);
     setbtnLoading(true);
     axiosInstance.put(`/user/${authUser}`,{
       username: e.username,
