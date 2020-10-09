@@ -85,7 +85,7 @@ exports.signin = (req, res) => {
         // generate token
         const userData = {
           userId: user._id,
-          role: user.role,
+          // role: user.role,
         };
         const accessToken = jwt.sign(userData, process.env.SECRET_KEY, {
           expiresIn: "10m",
@@ -129,11 +129,11 @@ exports.isAuthorized = (err, req, res, next) => {
   next();
 };
 
-exports.isAdmin = (req, res, next) => {
-  if (req.profile.role === 0) {
-    return res.status(403).json({
-      error: "You are not ADMIN,Acesss Denied",
-    });
-  }
-  next();
-};
+// exports.isAdmin = (req, res, next) => {
+//   if (req.profile.role === 0) {
+//     return res.status(403).json({
+//       error: "You are not ADMIN,Acesss Denied",
+//     });
+//   }
+//   next();
+// };

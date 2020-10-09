@@ -37,9 +37,11 @@ const LoginFormComponent = () => {
       })
       .catch((err) => {
         setBtnLoading(false);
-        if (err.response) {
+        console.log(err.response);
+        if (err.response.data.message) {
           message.error(err.response.data.message);
-          console.log(err.response);
+        }else if(err.response.data.error){
+          message.error(err.response.data.error);
         } else {
           message.error(err.message);
           console.log(err.message);

@@ -80,6 +80,7 @@ function App() {
         authToken,
         authUser,
         username,
+        setUsername: setUsername,
         setLocalStorage: setLocalStorage,
         logout: logout,
       }}

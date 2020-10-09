@@ -18,10 +18,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  role: {
-    type: Number,
-    default: 0,
-  },
 });
 
 userSchema.pre("deleteOne", { document: false, query: true }, function (next) {

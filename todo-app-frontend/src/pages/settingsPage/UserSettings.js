@@ -1,6 +1,6 @@
-import { Divider, Typography } from "antd";
-import React from "react";
-import NavbarComponent from "../UserDashboardPage/components/NavbarComponent";
+import React, { useState } from "react";
+import { Divider, Spin, Typography } from "antd";
+import NavbarComponent from "../../components/NavbarComponent"
 import AccountSettings from "./components/AccountSettings";
 import ResetPassword from "./components/ResetPassword";
 import "./settings.css";
@@ -8,19 +8,23 @@ import "./settings.css";
 const { Title } = Typography;
 
 const UserSettings = (props) => {
+  const [pageLoading, setPageLoading] = useState(false);
+
   return (
     <>
-      <NavbarComponent history={props.history} />
-      <div className="settings-container">
-        <div className="settings-page-heading">
-          <Title level={4} style={{ color: "#fff", marginBottom: "0" }}>
-            Settings
-          </Title>
+      <Spin size="large" spinning={pageLoading}>
+        <NavbarComponent history={props.history} />
+        <div className="settings-container">
+          <div className="settings-page-heading">
+            <Title level={4} style={{ color: "#fff", marginBottom: "0" }}>
+              Settings
+            </Title>
+          </div>
+          <AccountSettings setPageLoading={setPageLoading} />
+          <Divider style={{ borderColor: "#fff" }} />
+          <ResetPassword setPageLoading={setPageLoading}/>
         </div>
-        <AccountSettings />
-        <Divider style={{ borderColor: "#fff" }} />
-        <ResetPassword />
-      </div>
+      </Spin>
     </>
   );
 };

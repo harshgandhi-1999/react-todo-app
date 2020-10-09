@@ -5,17 +5,18 @@ const bcrypt = require("bcrypt");
 
 exports.getUserById = (req, res, next, id) => {
   //
-  User.findById(id).exec((err, user) => {
-    if (err) {
-      return res.status(404).json({
-        error: err,
-        message: "User not found",
-      });
-    }
-
-    req.profile = user;
-    next();
-  });
+  User.findById(id)
+    .select("username email")
+    .exec((err, user) => {
+      if (err) {
+        return res.status(404).json({
+          error: err,
+          message: "User not found",
+        });
+      }
+      req.profile = user;
+      next();
+    });
 };
 
 exports.getUserInfo = (req, res) => {
@@ -72,7 +73,6 @@ exports.deleteAccount = (req, res) => {
 };
 
 exports.resetPassword = (req, res) => {
-  console.log("this");
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json({
@@ -92,7 +92,7 @@ exports.resetPassword = (req, res) => {
         if (err) {
           return res.status(500).json({
             error: err,
-            message: "Update failed",
+            message: "Password reset failed!",
           });
         }
 
@@ -102,12 +102,12 @@ exports.resetPassword = (req, res) => {
           if (err) {
             return res.status(400).json({
               error: err,
-              message: "Update failed",
+              message: "Password reset failed!",
             });
           }
 
           res.status(200).json({
-            message: "Update successfull",
+            message: "Password updated successfully",
           });
         });
       });
