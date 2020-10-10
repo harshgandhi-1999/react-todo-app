@@ -27,7 +27,6 @@ function App() {
   };
 
   useEffect(() => {
-    console.log("1st use effect");
     const existingToken = localStorage.getItem("Token");
     const userId = localStorage.getItem("UserId");
     if (existingToken !== null && userId !== null) {
@@ -42,14 +41,12 @@ function App() {
 
   // fetch username
   useEffect(() => {
-    console.log("2nd use effect");
     if (
       isLoggedIn &&
       authToken !== null &&
       authUser !== null &&
       username === ""
     ) {
-      console.log("2nd use effect success");
       axiosInstance
         .get(`/user/${authUser}`)
         .then((res) => {
