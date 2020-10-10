@@ -13,6 +13,7 @@ const config = {
 };
 
 const SignupFormComponent = ({ history }) => {
+  console.log(history);
   const [btnLoading, setBtnLoading] = useState(false);
 
   const handleSubmit = (e) => {
@@ -29,9 +30,9 @@ const SignupFormComponent = ({ history }) => {
         console.log(res);
         setBtnLoading(false);
         message.success(res.data.message);
-        // setTimeout(() => {
-        //   history.push("/login");
-        // }, 2500);
+        setTimeout(() => {
+          history.push("/login");
+        }, 1000);
       })
       .catch((err) => {
         setBtnLoading(false);

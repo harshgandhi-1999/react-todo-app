@@ -1,6 +1,9 @@
 import React from "react";
-import { Dropdown, Menu, List } from "antd";
-import { MoreOutlined } from "@ant-design/icons";
+import { Dropdown, Menu, List, Typography} from "antd";
+import { EditOutlined, MoreOutlined } from "@ant-design/icons";
+import './todoitem.css'
+
+const {Text} = Typography
 
 const menu = (item, deleteTodo, completeTodo) => {
   const handleClick = (e) => {
@@ -20,17 +23,24 @@ const menu = (item, deleteTodo, completeTodo) => {
     </Menu>
   );
 };
-const TodoItem = ({ item, handleDeleteTodo, handleCompleteTodo }) => {
+
+const TodoItem = ({ item, handleDeleteTodo, handleCompleteTodo,handleEditTodo }) => {
   return (
+    <>
+    {/* show list item */}
     <List.Item
       key={item.id}
       actions={[
+        item.completed ? <></> :  <div className="edit-btn">
+        <EditOutlined style={{color: 'rgba(255,255,255,0.5)', fontSize: "1.5rem", cursor: "pointer" }} onClick={()=>handleEditTodo(item)}/>,
+     </div>
+        ,
         <Dropdown
           overlay={() => menu(item, handleDeleteTodo, handleCompleteTodo)}
           trigger={["click"]}
         >
           <MoreOutlined
-            style={{ color: "#fff", fontSize: "2rem", cursor: "pointer" }}
+            style={{ color: "#fff", fontSize: "1.5rem", cursor: "pointer" }}
           />
         </Dropdown>,
       ]}
@@ -46,17 +56,18 @@ const TodoItem = ({ item, handleDeleteTodo, handleCompleteTodo }) => {
     >
       <List.Item.Meta
         title={
-          <div style={{ color: "orange", overflowWrap: "anywhere" }}>
-            {item.name.toUpperCase()}
+          <div style={{ overflowWrap: "anywhere" }}>
+            <Text style={{color: "orange"}} delete={item.completed}>{item.name.toUpperCase()}</Text>
           </div>
         }
         description={
-          <div style={{ color: "darkgray", overflowWrap: "anywhere" }}>
-            {item.description}
+          <div style={{overflowWrap: "anywhere" }}>
+            <Text style={{color: "darkgray"}} delete={item.completed}>{item.description}</Text>
           </div>
         }
       />
     </List.Item>
+    </>
   );
 };
 

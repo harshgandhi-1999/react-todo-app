@@ -35,11 +35,11 @@ router.put(
   [
     check(
       "currentPassword",
-      "password should be atleaast 3 characters"
+      "Password should be atleaast 3 characters"
     ).isLength({
       min: 3,
     }),
-    check("newPassword", "password should be aleast 3 characters").isLength({
+    check("newPassword", "Password should be aleast 3 characters").isLength({
       min: 3,
     }),
   ],

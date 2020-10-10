@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import "./MainContent.css";
-import AddTodoComponent from "./AddTodoComponent";
-import TodoListContainer from "./TodoListContainer";
-
-import axiosInstance from "../../../utils/axiosInstance";
+import React, { useState, useEffect,useRef } from "react";
 import { message, Modal } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
+import AddTodoComponent from "./AddTodoComponent";
+import TodoListContainer from "./TodoListContainer";
+import EditTodoComponent from "./EditTodoComponent";
+import axiosInstance from "../../../utils/axiosInstance";
 import { useAuth } from "../../../context/auth";
+import "./MainContent.css";
 
 const { confirm } = Modal;
 
@@ -14,6 +14,8 @@ const MainContent = () => {
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
+  const [modalVisible,setModalVisible] = useState(false);
+  const [editItem,setEditItem] = useState({});
   const { authUser, logout } = useAuth();
 
   const handleAddTodo = ({ name, description }) => {
@@ -143,53 +145,65 @@ const MainContent = () => {
       });
   };
 
+  const handleEditTodo = (todoItem)=>{
+    // console.log(todoItem);
+    setEditItem(todoItem)
+    setModalVisible(true);
+  }
+
   const fetchTodoList = () => {
     setLoading(true);
-    axiosInstance
-      .get(`/get-all-todos/${authUser}`)
-      .then((res) => {
-        console.log(res.data);
-        const todolist = res.data.items.map((item) => {
-          return {
-            id: item._id,
-            name: item.name,
-            description: item.description,
-            completed: item.completed,
-          };
-        });
+    if (authUser !== null) {
+      axiosInstance
+        .get(`/get-all-todos/${authUser}`)
+        .then((res) => {
+          console.log(res.data);
+          const todolist = res.data.items.map((item) => {
+            return {
+              id: item._id,
+              name: item.name,
+              description: item.description,
+              completed: item.completed,
+            };
+          });
 
-        setTodos(todolist);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-        console.log(err);
-        if (err.response) {
-          if (err.response.status === 401) {
-            logout();
+          setTodos(todolist);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setLoading(false);
+          console.log(err);
+          if (err.response) {
+            if (err.response.status === 401) {
+              logout();
+            } else {
+              message.error("Unable to fetch todos");
+            }
+            console.log(err.response);
           } else {
-            message.error("Unable to fetch todos");
+            console.log(err.message);
+            message.error(err.message);
           }
-          console.log(err.response);
-        } else {
-          console.log(err.message);
-          message.error(err.message);
-        }
-      });
+        });
+    }
   };
 
   useEffect(fetchTodoList, []);
 
   return (
+    <>
+    <EditTodoComponent item={editItem} visible={modalVisible} setVisible={setModalVisible}/>
     <div className="main-content-style">
       <AddTodoComponent handleAddTodo={handleAddTodo} btnLoading={btnLoading} />
       <TodoListContainer
         todos={todos}
         handleDeleteTodo={handleDeleteTodo}
         handleCompleteTodo={handleCompleteTodo}
+        handleEditTodo={handleEditTodo}
         loading={loading}
       />
     </div>
+    </>
   );
 };
 
