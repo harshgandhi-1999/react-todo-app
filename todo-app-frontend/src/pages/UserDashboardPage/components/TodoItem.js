@@ -24,7 +24,7 @@ const menu = (item, deleteTodo, completeTodo) => {
   );
 };
 
-const TodoItem = ({ item, handleDeleteTodo, handleCompleteTodo,handleEditTodo }) => {
+const TodoItem = ({ item, handleDeleteTodo, handleCompleteTodo,openModal}) => {
   return (
     <>
     {/* show list item */}
@@ -32,7 +32,7 @@ const TodoItem = ({ item, handleDeleteTodo, handleCompleteTodo,handleEditTodo })
       key={item.id}
       actions={[
         item.completed ? <></> :  <div className="edit-btn">
-        <EditOutlined style={{color: 'rgba(255,255,255,0.5)', fontSize: "1.5rem", cursor: "pointer" }} onClick={()=>handleEditTodo(item)}/>,
+        <EditOutlined style={{color: 'rgba(255,255,255,0.5)', fontSize: "1.5rem", cursor: "pointer" }} onClick={()=>openModal(item)}/>,
      </div>
         ,
         <Dropdown

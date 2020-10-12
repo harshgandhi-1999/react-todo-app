@@ -1,34 +1,32 @@
-import React, { useEffect, useRef,useState } from 'react';
+import React, {useCallback,useRef } from 'react';
 import { Modal, Input, Form } from "antd";
 
-const EditTodoComponent = ({ item, visible, setVisible }) => {
-  const editFormRef = useRef(null);
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("")
-  console.log(item.name,item.description);
+const EditTodoComponent = ({ item, visible, setVisible,handleUpdateTodo }) => {
+  const temp = useRef();
 
   const handleOk = () => {
-    const data = editFormRef.current.getFieldsValue();
-    console.log(data);
-    setVisible(false);
-  }
+    const updatedTodo = temp.current.getFieldsValue();
 
-  const setFormValues = () => {
-    if (editFormRef.current !== null) {
-      editFormRef.current.setFieldsValue({
-        taskName: name,
-        taskDescription: description,
-      })
+    if(updatedTodo.taskName.length > 0){
+      const body = {
+        name: updatedTodo.taskName,
+        description: updatedTodo.taskDescription
+      }
+      handleUpdateTodo(body,item.id);
+      setVisible(false);
     }
   }
 
-  useEffect(() => {
-      setFormValues();
-      setName(item.name);
-      setDescription(item.description);
-      console.log("value set");
-      console.log(editFormRef.current);
-  }, []);
+  const editFormRef = useCallback((node)=>{
+    // console.log(node);
+    if(node!==null){
+      node.setFieldsValue({
+        taskName: item.name,
+        taskDescription: item.description,
+      })
+      temp.current = node;
+    }
+  },[visible])
 
   return (
     <Modal

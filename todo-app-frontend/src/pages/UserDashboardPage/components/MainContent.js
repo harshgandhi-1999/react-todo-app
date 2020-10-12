@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect,} from "react";
 import { message, Modal } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import AddTodoComponent from "./AddTodoComponent";
@@ -145,10 +145,32 @@ const MainContent = () => {
       });
   };
 
-  const handleEditTodo = (todoItem)=>{
-    // console.log(todoItem);
-    setEditItem(todoItem)
-    setModalVisible(true);
+  const handleUpdateTodo = (updatedTodo,todoItemId)=>{
+    console.log(updatedTodo);
+    console.log(todoItemId);
+    // send request to update todo item
+    setLoading(true);
+    axiosInstance.put(`/update-todo/${authUser}/${todoItemId}`,updatedTodo)
+    .then(res=>{
+      setLoading(false);
+        console.log(res);
+        message.success(res.data.message);
+        fetchTodoList();
+    })
+    .catch(err=>{
+      setLoading(false);
+      if (err.response) {
+        if (err.response.status === 401) {
+          logout();
+        } else {
+          message.error("Unable to update Todo");
+        }
+        console.log(err.response);
+      } else {
+        message.error(err.message);
+        console.log(err.message);
+      }
+    })
   }
 
   const fetchTodoList = () => {
@@ -188,18 +210,24 @@ const MainContent = () => {
     }
   };
 
+
+  const openModal = (todoItem)=>{
+    setEditItem(todoItem)
+    setModalVisible(true);
+  }
+
   useEffect(fetchTodoList, []);
 
   return (
     <>
-    <EditTodoComponent item={editItem} visible={modalVisible} setVisible={setModalVisible}/>
+    <EditTodoComponent item={editItem} visible={modalVisible} setVisible={setModalVisible} handleUpdateTodo={handleUpdateTodo}/>
     <div className="main-content-style">
       <AddTodoComponent handleAddTodo={handleAddTodo} btnLoading={btnLoading} />
       <TodoListContainer
         todos={todos}
         handleDeleteTodo={handleDeleteTodo}
         handleCompleteTodo={handleCompleteTodo}
-        handleEditTodo={handleEditTodo}
+        openModal={openModal}
         loading={loading}
       />
     </div>

@@ -38,9 +38,9 @@ const LoginFormComponent = () => {
       .catch((err) => {
         setBtnLoading(false);
         console.log(err.response);
-        if (err.response.data.message) {
+        if (err.response && err.response.data.message) {
           message.error(err.response.data.message);
-        }else if(err.response.data.error){
+        }else if(err.response && err.response.data.error){
           message.error(err.response.data.error);
         } else {
           message.error(err.message);
@@ -89,6 +89,10 @@ const LoginFormComponent = () => {
           </Button>
           <Link to="/signup">
             <span className="my-link">Don't have an account? Register</span>
+          </Link>
+          <br/>
+          <Link to="/forgot-password">
+            <span className="my-link">Forgot Password?</span>
           </Link>
         </Form>
       </div>
