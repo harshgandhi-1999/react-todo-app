@@ -1,11 +1,11 @@
-import React, {useCallback } from 'react';
+import React, {useCallback,useRef } from 'react';
 import { Modal, Input, Form } from "antd";
 
 const EditTodoComponent = ({ item, visible, setVisible,handleUpdateTodo }) => {
-  let temp;
+  const temp = useRef();
 
   const handleOk = () => {
-    const updatedTodo = temp.getFieldsValue();
+    const updatedTodo = temp.current.getFieldsValue();
 
     if(updatedTodo.taskName.length > 0){
       const body = {
@@ -24,7 +24,7 @@ const EditTodoComponent = ({ item, visible, setVisible,handleUpdateTodo }) => {
         taskName: item.name,
         taskDescription: item.description,
       })
-      temp = node;
+      temp.current = node;
     }
   },[visible])
 
