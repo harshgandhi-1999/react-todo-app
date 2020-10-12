@@ -6,13 +6,15 @@ const EditTodoComponent = ({ item, visible, setVisible,handleUpdateTodo }) => {
 
   const handleOk = () => {
     const updatedTodo = temp.getFieldsValue();
-    // console.log(updatedTodo);
-    const body = {
-      name: updatedTodo.taskName,
-      description: updatedTodo.taskDescription
+
+    if(updatedTodo.taskName.length > 0){
+      const body = {
+        name: updatedTodo.taskName,
+        description: updatedTodo.taskDescription
+      }
+      handleUpdateTodo(body,item.id);
+      setVisible(false);
     }
-    handleUpdateTodo(body,item.id);
-    setVisible(false);
   }
 
   const editFormRef = useCallback((node)=>{
