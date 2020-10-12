@@ -7,7 +7,7 @@ const TodoListContainer = ({
   todos,
   handleDeleteTodo,
   handleCompleteTodo,
-  handleEditTodo,
+ openModal,
   loading,
 }) => {
   return (
@@ -25,7 +25,7 @@ const TodoListContainer = ({
                 item={item}
                 handleDeleteTodo={handleDeleteTodo}
                 handleCompleteTodo={handleCompleteTodo}
-                handleEditTodo={handleEditTodo}
+                openModal={openModal}
               />
             );
           }}
