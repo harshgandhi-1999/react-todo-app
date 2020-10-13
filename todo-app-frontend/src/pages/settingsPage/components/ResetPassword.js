@@ -60,7 +60,7 @@ const ResetPassword = () => {
                 },
               ]}
             >
-              <Input.Password />
+              <Input.Password placeholder="Enter current password"/>
             </Form.Item>
             <Form.Item
               label={<Label text="New Password" style={{ color: "#fff" }} />}
@@ -69,7 +69,7 @@ const ResetPassword = () => {
                 { required: true, message: "Please provide new password!" },
               ]}
             >
-              <Input.Password />
+              <Input.Password placeholder="Enter new password"/>
             </Form.Item>
           <Button type="primary" htmlType="submit" loading={btnLoading}>
             Change Password
