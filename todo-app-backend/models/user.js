@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema({
 
 userSchema.methods.generatePasswordReset = function(){
   this.resetPasswordToken = crypto.randomBytes(20).toString('hex');
-  this.resetPasswordExpires = Date.now() + 3600000;
+  this.resetPasswordExpires = Date.now() + 600000;
 }
 
 userSchema.pre("deleteOne", { document: false, query: true }, function (next) {
