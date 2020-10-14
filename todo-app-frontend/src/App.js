@@ -9,6 +9,7 @@ import ProtectedRoute from "./Routes/ProtectedRoute";
 import { AuthContext } from "./context/auth";
 import axiosInstance from "./utils/axiosInstance";
 import UserSettings from "./pages/settingsPage/UserSettings";
+import ForgotPassword from "./pages/ForgotPasswordPage/ForgotPassword";
 
 function App() {
   const [authToken, setAuthToken] = useState(null);
@@ -103,6 +104,13 @@ function App() {
                 ) : (
                   <Login setIsLoggedIn={setIsLoggedIn} />
                 )
+              }
+            />
+            <Route
+              exact
+              path="/forgot-password"
+              component={() =>
+                isLoggedIn ? <Redirect to="/" /> : <ForgotPassword />
               }
             />
             <Route path="*" component={NotFound} />
