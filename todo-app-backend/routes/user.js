@@ -9,6 +9,7 @@ const {
   updateUserInfo,
   deleteAccount,
   resetPassword,
+  changePassword
 } = require("../controllers/user");
 
 const { isSignedIn, isAuthorized } = require("../controllers/auth");
@@ -45,5 +46,7 @@ router.put(
   ],
   resetPassword
 );
+
+router.post('/forgotPassword',changePassword);
 
 module.exports = router;
