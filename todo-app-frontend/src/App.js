@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import "./App.css";
 import Dashboard from "./pages/UserDashboardPage/Dashboard";
 import Login from "./pages/LoginPage/Login";
 import Signup from "./pages/SignupPage/Signup";
 import NotFound from "./pages/NotFoundPage/NotFound";
+import UserSettings from "./pages/settingsPage/UserSettings";
+import ForgotPassword from "./pages/ForgotPasswordPage/ForgotPassword";
+import ResetPassword from "./pages/ResetPasswordPage/ResetPassword";
 import ProtectedRoute from "./Routes/ProtectedRoute";
 import { AuthContext } from "./context/auth";
 import axiosInstance from "./utils/axiosInstance";
-import UserSettings from "./pages/settingsPage/UserSettings";
-import ForgotPassword from "./pages/ForgotPasswordPage/ForgotPassword";
+import "./App.css";
 
 function App() {
   const [authToken, setAuthToken] = useState(null);
@@ -111,6 +112,13 @@ function App() {
               path="/forgot-password"
               component={() =>
                 isLoggedIn ? <Redirect to="/" /> : <ForgotPassword />
+              }
+            />
+            <Route
+              exact
+              path="/auth/reset/:resetPasswordToken"
+              component={(props) =>
+                isLoggedIn ? <Redirect to="/" /> : <ResetPassword {...props} />
               }
             />
             <Route path="*" component={NotFound} />

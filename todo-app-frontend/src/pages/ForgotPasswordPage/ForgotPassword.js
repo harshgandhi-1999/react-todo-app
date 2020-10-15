@@ -16,25 +16,29 @@ const ForgotPassword = () => {
 
   const handleSendLink = () => {
     console.log(email);
-    setBtnLoading(true);
-    axiosInstance
-      .post("/sendLink", { email: email })
-      .then((res) => {
-        setBtnLoading(false);
-        console.log(res);
-        message.success(res.data.message);
-        setEmail("");
-      })
-      .catch((err) => {
-        setBtnLoading(false);
-        if (err.response && err.response.data.message) {
-          console.log(err.response);
-          message.error(err.response.data.message);
-        } else {
-          console.log(err.message);
-          message.error(err.message);
-        }
-      });
+    if (email.length > 0) {
+      setBtnLoading(true);
+      axiosInstance
+        .post("/sendLink", { email: email })
+        .then((res) => {
+          setBtnLoading(false);
+          console.log(res);
+          message.success(res.data.message);
+          setEmail("");
+        })
+        .catch((err) => {
+          setBtnLoading(false);
+          if (err.response && err.response.data.message) {
+            console.log(err.response);
+            message.error(err.response.data.message);
+          } else {
+            console.log(err.message);
+            message.error(err.message);
+          }
+        });
+    } else {
+      message.error("Email id is required");
+    }
   };
 
   return (
@@ -52,7 +56,7 @@ const ForgotPassword = () => {
             style={{ textAlign: "left", marginBottom: "10px" }}
             className="my-label-style"
           >
-            Email
+            Email <span style={{ color: "red", fontSize: "1rem" }}>*</span>
           </div>
           <Input
             placeholder="Enter email id"

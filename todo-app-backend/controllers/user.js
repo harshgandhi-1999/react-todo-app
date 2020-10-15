@@ -240,29 +240,35 @@ exports.checkTokenValid = (req, res) => {
 
 // setting up new password and sending password changed message to email id
 exports.setNewPassword = (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({
+      message: errors.array()[0].msg,
+    });
+  }
   const user = req.user;
   console.log(user);
-  user.resetPasswordToken = undefined;
-  user.resetPasswordExpires = undefined;
 
-  bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
+  bcrypt.hash(req.body.newPassword, 10, (err, hashedPassword) => {
     if (err) {
       return res.status(500).json({
         error: err,
       });
     }
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
     user.password = hashedPassword;
     user.save((err) => {
       if (err)
-        return res.status(500).json({ error: err, message: err.message });
+        return res.status(500).json({ error: err, message: "Server Error" });
 
       // send email
       const mailOptions = {
         from: "Todo App",
         to: user.email,
-        subject: "Your password has been changed",
+        subject: "TODO APP PASSWORD CHANGED",
         text: `Hi ${user.username} \n 
-            This is a confirmation that the password for your account ${user.email} has just been changed.\n`,
+            This is a confirmation that the password for your account ${user.email} on Todo App has just been changed.\n`,
       };
 
       transporter.sendMail(mailOptions, (error, info) => {
