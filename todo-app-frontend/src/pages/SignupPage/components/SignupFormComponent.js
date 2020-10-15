@@ -37,7 +37,7 @@ const SignupFormComponent = ({ history }) => {
       .catch((err) => {
         setBtnLoading(false);
         if (err.response) {
-          message.error(err.response.data.message || err.response.data.error);
+          message.error(err.response.data.message);
           console.log(err.response);
         } else {
           message.error(err.message);

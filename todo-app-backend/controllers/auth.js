@@ -8,7 +8,7 @@ exports.signup = (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json({
-      error: errors.array()[0].msg,
+      message: errors.array()[0].msg,
     });
   }
   //   find email if it already exists or not
@@ -63,7 +63,7 @@ exports.signin = (req, res) => {
 
   if (!errors.isEmpty()) {
     return res.status(422).json({
-      error: errors.array()[0].msg,
+      message: errors.array()[0].msg,
     });
   }
 
