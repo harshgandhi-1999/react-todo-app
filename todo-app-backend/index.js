@@ -33,7 +33,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(morgan("dev"));
 app.use(cookieParser());
-app.use(cors());
+
+let corsOptions = {
+  origin: "https://thetodolistapp.herokuapp.com",
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors());
 
 // ROUTES
 app.use("/api/todo-app", todoRoutes);
