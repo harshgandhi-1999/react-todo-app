@@ -198,7 +198,8 @@ exports.sendLinkForResetPassword = (req, res) => {
         }
 
         let link =
-          "http://localhost:3000/auth/reset/" + updatedUser.resetPasswordToken;
+          "https://thetodolistapp.herokuapp.com/auth/reset/" +
+          updatedUser.resetPasswordToken;
         console.log(link);
 
         const mailOptions = {
