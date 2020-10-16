@@ -3,7 +3,6 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 
 // IMPORT ROUTES
@@ -31,17 +30,14 @@ mongoose
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(morgan("dev"));
-app.use(cookieParser());
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Credentials", true);
   res.header(
     "Access-Control-Allow-Headers",
     "Origin,Authorization,X-Requested-With,Content-Type,Accept"
   );
-  if (req.method === "OPTIONS") {
-    // console.log("options request");
-    res.header("Access-Control-Allow-Methods", "PUT, POST, DELETE,GET");
-  }
+  res.header("Access-Control-Allow-Methods", "PUT, POST, DELETE,GET,OPTIONS");
   // console.log("setting cors");
   next();
 });
