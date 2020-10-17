@@ -1,6 +1,6 @@
-TODO APP WITH REACT AND NODE
+TODO LIST APP WITH REACTJS FRONTEND AND NODEJS BACKEND
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+THIS APP IS DEPLOYED AT https://thetodolistapp.herokuapp.com
 
 ## Available Scripts
 
