@@ -88,7 +88,7 @@ exports.signin = (req, res) => {
           // role: user.role,
         };
         const accessToken = jwt.sign(userData, process.env.SECRET_KEY, {
-          expiresIn: "10m",
+          expiresIn: "1h",
         });
 
         return res.status(200).json({

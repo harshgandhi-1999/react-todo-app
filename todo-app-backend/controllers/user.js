@@ -208,7 +208,7 @@ exports.sendLinkForResetPassword = (req, res) => {
           subject: "TODO APP RESET PASSWORD REQUEST", // Subject line
           text: `Hi, ${updatedUser.username}\n 
         Please click on the following link to reset your password. \n ${link} \n
-        This link is valid only for 15 mins.\n 
+        This link is valid only for 5 mins.\n 
         If you did not request this, please ignore this email and your password will remain unchanged.\n`,
         };
 
