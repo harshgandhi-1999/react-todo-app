@@ -7,18 +7,15 @@ import axiosInstance from "../../utils/axiosInstance";
 import NotFound from "../NotFoundPage/NotFound";
 
 const ResetPassword = (props) => {
-  console.log(props);
   const [linkValid, setLinkValid] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
 
   const token = props.match.params.resetPasswordToken;
 
   useEffect(() => {
-    console.log("kjhjnkjnkkjnkn");
     axiosInstance
       .get(`/checkTokenValid/${token}`)
       .then((res) => {
-        console.log(res);
         if (res.status === 200 && res.data.message === "OK") {
           setLinkValid(true);
         } else {
@@ -32,11 +29,9 @@ const ResetPassword = (props) => {
           err.response &&
           err.response.data.message
         ) {
-          console.log(err.response);
           message.error(err.response.data.message);
           setLinkValid(false);
         } else if (err.response && err.response.data.message) {
-          console.log(err.response);
           message.error(err.response.data.message);
         } else {
           message.error(err.message);
@@ -45,11 +40,9 @@ const ResetPassword = (props) => {
   }, [token]);
 
   const handleResetPassword = (e) => {
-    console.log(e);
     if (e.new_password !== e.confirm_password) {
       message.error("New password and Confirm password do not match");
     } else {
-      console.log(e);
       setBtnLoading(true);
       axiosInstance
         .post(`/setNewPassword/${token}`, {
@@ -57,7 +50,6 @@ const ResetPassword = (props) => {
         })
         .then((res) => {
           setBtnLoading(false);
-          console.log(res);
           message.success(res.data.message);
         })
         .catch((err) => {
@@ -73,10 +65,8 @@ const ResetPassword = (props) => {
             message.error(err.response.data.message);
           } else if (err.response && err.response.data.message) {
             message.error(err.response.data.message);
-            console.log(err.response);
           } else {
             message.error(err.message);
-            console.log(err.message);
           }
         });
     }

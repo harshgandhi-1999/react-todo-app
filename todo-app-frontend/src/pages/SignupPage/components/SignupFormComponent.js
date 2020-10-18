@@ -13,7 +13,6 @@ const config = {
 };
 
 const SignupFormComponent = ({ history }) => {
-  console.log(history);
   const [btnLoading, setBtnLoading] = useState(false);
 
   const handleSubmit = (e) => {
@@ -27,7 +26,6 @@ const SignupFormComponent = ({ history }) => {
     axiosInstance
       .post("/signup", data, config)
       .then((res) => {
-        console.log(res);
         setBtnLoading(false);
         message.success(res.data.message);
         setTimeout(() => {
@@ -36,12 +34,11 @@ const SignupFormComponent = ({ history }) => {
       })
       .catch((err) => {
         setBtnLoading(false);
+        console.log(err);
         if (err.response) {
           message.error(err.response.data.message);
-          console.log(err.response);
         } else {
           message.error(err.message);
-          console.log(err.message);
         }
       });
   };
@@ -49,12 +46,7 @@ const SignupFormComponent = ({ history }) => {
   return (
     <div className="my-form-container">
       <div className="my-form-style">
-        <Form
-          layout="vertical"
-          name="signup-form"
-          requiredMark="optional"
-          onFinish={handleSubmit}
-        >
+        <Form layout="vertical" name="signup-form" onFinish={handleSubmit}>
           <div className="my-form-heading">Sign-Up</div>
           <Form.Item
             label={<Label text="Username" />}

@@ -9,34 +9,34 @@ const { Title } = Typography;
 const AccountSettings = ({ setPageLoading }) => {
   const [btnLoading, setbtnLoading] = useState(false);
   const account_form_ref = useRef();
-  const { authUser, logout,setUsername } = useAuth();
+  const { authUser, logout, setUsername } = useAuth();
 
-  function fetchUserInfo(){
+  function fetchUserInfo() {
     setPageLoading(true);
     axiosInstance
-        .get(`/user/${authUser}`)
-        .then((res) => {
-          console.log(res);
-          setPageLoading(false);
+      .get(`/user/${authUser}`)
+      .then((res) => {
+        setPageLoading(false);
+        if (account_form_ref.current !== null) {
           account_form_ref.current.setFieldsValue({
             username: res.data.username,
             email: res.data.email,
           });
-        })
-        .catch((err) => {
-          setPageLoading(false);
-          if (err.response) {
-            if (err.response.status === 401) {
-              logout();
-            } else {
-              message.error("Unable to fetch User details");
-            }
-            console.log(err.response);
+        }
+      })
+      .catch((err) => {
+        setPageLoading(false);
+        console.log(err);
+        if (err.response) {
+          if (err.response.status === 401) {
+            logout();
           } else {
-            message.error(err.message);
-            console.log(err.message);
+            message.error("Unable to fetch User details");
           }
-        });
+        } else {
+          message.error(err.message);
+        }
+      });
   }
 
   useEffect(() => {
@@ -47,30 +47,29 @@ const AccountSettings = ({ setPageLoading }) => {
 
   const updateAccountInfo = (e) => {
     setbtnLoading(true);
-    axiosInstance.put(`/user/${authUser}`,{
-      username: e.username,
-      email: e.email,
-    })
-    .then(res=>{
-      console.log(res);
-      setbtnLoading(false);
-      message.success(res.data.message);
-      setUsername(res.data.updatedUser.username)
-    })
-    .catch(err=>{
-      setbtnLoading(false);
-      if (err.response) {
-        if (err.response.status === 401) {
-          logout();
+    axiosInstance
+      .put(`/user/${authUser}`, {
+        username: e.username,
+        email: e.email,
+      })
+      .then((res) => {
+        setbtnLoading(false);
+        message.success(res.data.message);
+        setUsername(res.data.updatedUser.username);
+      })
+      .catch((err) => {
+        setbtnLoading(false);
+        console.log(err);
+        if (err.response) {
+          if (err.response.status === 401) {
+            logout();
+          } else {
+            message.error(err.response.data.message);
+          }
         } else {
-          message.error(err.response.data);
+          message.error(err.message);
         }
-        console.log(err.response);
-      } else {
-        message.error(err.message);
-        console.log(err.message);
-      }
-    })
+      });
   };
 
   return (

@@ -13,3 +13,7 @@
   border: 3px solid rgba(255, 255, 255, 0.3);
   border-style: dashed;
 }
+
+.todo-list-container .ant-spin-blur{
+  opacity: 0.03;
+}

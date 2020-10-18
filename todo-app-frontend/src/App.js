@@ -32,7 +32,6 @@ function App() {
     const existingToken = localStorage.getItem("Token");
     const userId = localStorage.getItem("UserId");
     if (existingToken !== null && userId !== null) {
-      console.log("1st use effect success");
       axiosInstance.defaults.headers.common["Authorization"] =
         "Bearer " + existingToken;
       setIsLoggedIn(true);

@@ -15,24 +15,21 @@ const ForgotPassword = () => {
   };
 
   const handleSendLink = () => {
-    console.log(email);
     if (email.length > 0) {
       setBtnLoading(true);
       axiosInstance
         .post("/sendLink", { email: email })
         .then((res) => {
           setBtnLoading(false);
-          console.log(res);
           message.success(res.data.message);
           setEmail("");
         })
         .catch((err) => {
           setBtnLoading(false);
+          console.log(err);
           if (err.response && err.response.data.message) {
-            console.log(err.response);
             message.error(err.response.data.message);
           } else {
-            console.log(err.message);
             message.error(err.message);
           }
         });
