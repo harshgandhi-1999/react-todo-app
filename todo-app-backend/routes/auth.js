@@ -9,7 +9,7 @@ router.post(
   [
     check("username", "username is required"),
     check("email", "Please provide valid email id").isEmail(),
-    check("password", "password should be atleaast 6 characters").isLength({
+    check("password", "Password should be atleaast 6 characters").isLength({
       min: 6,
     }),
   ],
@@ -20,7 +20,7 @@ router.post(
   "/signin",
   [
     check("email", "Please provide valid email id").isEmail(),
-    check("password", "Password should be atleast 6 char").isLength({ min: 6 }),
+    check("password", "Password should be atleast 6 characters").isLength({ min: 6 }),
   ],
   signin
 );
