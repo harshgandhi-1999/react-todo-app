@@ -18,7 +18,7 @@ const MainContent = () => {
   const [editItem, setEditItem] = useState({});
   const { authUser, logout } = useAuth();
 
-  const handleAddTodo = ({ name, description }) => {
+  const handleAddTodo = ({ name, description }, cb) => {
     setBtnLoading(true);
     axiosInstance
       .post(`/create-todo/${authUser}`, {
@@ -27,8 +27,18 @@ const MainContent = () => {
       })
       .then((res) => {
         setBtnLoading(false);
+        cb(); //callback to cleaar the fields
         message.success(res.data.message);
-        fetchTodoList();
+        const createdTodo = {
+          id: res.data.createdItem._id,
+          name: res.data.createdItem.name,
+          description: res.data.createdItem.description,
+          completed: res.data.createdItem.completed,
+        };
+
+        setTodos((prevTodos) => {
+          return [...prevTodos, createdTodo];
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -62,7 +72,9 @@ const MainContent = () => {
             .then((res) => {
               setLoading(false);
               message.success(res.data.message);
-              fetchTodoList();
+              setTodos((prevTodos) => {
+                return prevTodos.filter((el) => el.id !== todoItemId);
+              });
             })
             .catch((err) => {
               console.log(err);
@@ -89,7 +101,9 @@ const MainContent = () => {
         .then((res) => {
           setLoading(false);
           message.success(res.data.message);
-          fetchTodoList();
+          setTodos((prevTodos) => {
+            return prevTodos.filter((el) => el.id !== todoItemId);
+          });
         })
         .catch((err) => {
           setLoading(false);
@@ -114,7 +128,14 @@ const MainContent = () => {
       .then((res) => {
         setLoading(false);
         message.success(res.data.message);
-        fetchTodoList();
+        setTodos((prevTodos) => {
+          return prevTodos.map((todoitem) => {
+            if (todoitem.id === todoItemId) {
+              return { ...todoitem, completed: true };
+            }
+            return todoitem;
+          });
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -139,7 +160,19 @@ const MainContent = () => {
       .then((res) => {
         setLoading(false);
         message.success(res.data.message);
-        fetchTodoList();
+        setTodos((prevTodos) => {
+          return prevTodos.map((todoitem) => {
+            if (todoitem.id === todoItemId) {
+              return {
+                ...todoitem,
+                name: updatedTodo.name,
+                description: updatedTodo.description,
+              };
+            }
+
+            return todoitem;
+          });
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -196,7 +229,6 @@ const MainContent = () => {
   };
 
   useEffect(fetchTodoList, []);
-
   return (
     <>
       <EditTodoComponent

@@ -71,9 +71,8 @@ const LoginFormComponent = () => {
             ]}
             style={{ marginBottom: "10px" }}
           >
-            <>
-              <Input.Password placeholder="Enter password" />
-              <span
+            <Input.Password placeholder="Enter password" />
+            {/* <span
                 style={{
                   color: "grey",
                   fontSize: "0.8rem",
@@ -81,8 +80,7 @@ const LoginFormComponent = () => {
                 }}
               >
                 Password should be atleast 6 characters
-              </span>
-            </>
+              </span> */}
           </Form.Item>
           <Button
             type="primary"

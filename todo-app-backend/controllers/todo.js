@@ -51,7 +51,7 @@ exports.createTodoItem = (req, res) => {
 
     res.status(200).json({
       createdItem: savedItem,
-      message: "TODO item createed successfully",
+      message: "TODO item created successfully",
     });
   });
 };

@@ -7,13 +7,13 @@ const TodoListContainer = ({
   todos,
   handleDeleteTodo,
   handleCompleteTodo,
- openModal,
+  openModal,
   loading,
 }) => {
   return (
     <div className="todo-list-container">
       <div style={{ color: "#fff" }}>TODO LIST</div>
-      {todos.length === 0 ? (
+      {todos === null || todos.length === 0 ? (
         <div className="empty-container">No Todos</div>
       ) : (
         <List
