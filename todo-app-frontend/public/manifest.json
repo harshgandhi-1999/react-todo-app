@@ -1,0 +1,16 @@
+{
+  "short_name": "Todo App",
+  "name": "Todo List App",
+  "icons": [
+    {
+      "src": "./images/logo.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#0000ff",
+  "background_color": "#ffffff"
+}
