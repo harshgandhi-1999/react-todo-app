@@ -54,7 +54,7 @@ const NavbarComponent = (props) => {
           <span style={{ fontSize: "1rem", cursor: "pointer", color: "#fff" }}>
             <UserOutlined />
             {"  "}
-            {username.length > 0 ? username : ""}
+            {username && username.length > 0 ? username : ""}
             {"  "}
             <DownOutlined />
           </span>
