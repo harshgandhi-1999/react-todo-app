@@ -1,16 +1,9 @@
 const User = require("../models/user");
 const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
-const nodemailer = require("nodemailer");
+const mailer = require("../utils/emailconfig");
 
-// transporter for sending mail
-let transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.FROM_EMAIL,
-    pass: process.env.PASSWORD,
-  },
-});
+const SENDER_EMAIL = "amazingahmad12@gmail.com";
 
 exports.getUserById = (req, res, next, id) => {
   //
@@ -203,8 +196,8 @@ exports.sendLinkForResetPassword = (req, res) => {
         console.log(link);
 
         const mailOptions = {
-          from: "Todo App", // sender address
           to: updatedUser.email, // list of receivers
+          from: SENDER_EMAIL, // sender address
           subject: "TODO APP RESET PASSWORD REQUEST", // Subject line
           text: `Hi, ${updatedUser.username}\n 
         Please click on the following link to reset your password. \n ${link} \n
@@ -212,7 +205,7 @@ exports.sendLinkForResetPassword = (req, res) => {
         If you did not request this, please ignore this email and your password will remain unchanged.\n`,
         };
 
-        transporter.sendMail(mailOptions, (err, info) => {
+        mailer.send(mailOptions, (err, info) => {
           if (err) {
             console.log(err);
             return res
@@ -265,14 +258,14 @@ exports.setNewPassword = (req, res) => {
 
       // send email
       const mailOptions = {
-        from: "Todo App",
         to: user.email,
+        from: SENDER_EMAIL,
         subject: "TODO APP PASSWORD CHANGED",
         text: `Hi ${user.username} \n 
             This is a confirmation that the password for your account ${user.email} on Todo App has just been changed.\n`,
       };
 
-      transporter.sendMail(mailOptions, (error, info) => {
+      mailer.send(mailOptions, (error, info) => {
         if (error) {
           console.log(error);
           return res.status(500).json({ message: error.message });
